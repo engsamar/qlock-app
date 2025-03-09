@@ -1,0 +1,18 @@
+{
+  "app_name": "QLock",
+  "welcome_title": "Welcome to QLock",
+  "welcome_subtitle": "Experience secure, fast, and seamless messaging. Stay connected with friends and family—effortlessly.",
+  "get_started": "Get Started",
+  "login": "Login",
+  "enter_phone": "Enter Your Phone Number",
+  "sms_code_info": "You will get a code via sms.",
+  "next": "Next",
+  "otp": "OTP",
+  "enter_otp": "Enter OTP Code Sent to",
+  "resend_code": "Resend Code",
+  "complete_profile": "Complete Profile",
+  "username": "Username",
+  "enter_username": "Enter your username",
+  "phone_number": "Phone Number",
+  "change_picture": "Change Picture"
+} 
