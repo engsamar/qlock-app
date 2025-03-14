@@ -7,4 +7,6 @@ class AppImages {
   
   // Onboarding and welcome images
   static const String onboarding = '$_basePath/onboarding.png';
+
+  static const String noChats = '$_basePath/no_chats.png';
 } 
