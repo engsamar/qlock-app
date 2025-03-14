@@ -9,11 +9,13 @@ class CustomElevatedButton extends StatelessWidget {
     required this.onTap,
     required this.text,
     this.isSingleColor = false,
+    this.isLoading = false,
   });
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
   final bool isSingleColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +46,18 @@ class CustomElevatedButton extends StatelessWidget {
         ),
 
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: isSingleColor ? AppColors.primary : AppColors.white,
-            ),
-          ),
+          child:
+              isLoading
+                  ? CircularProgressIndicator()
+                  : Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color:
+                          isSingleColor ? AppColors.primary : AppColors.white,
+                    ),
+                  ),
         ),
       ),
     );
