@@ -2,9 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:q_lock/core/widgets/custom_elevated_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_images.dart';
+import '../../../../core/constants/app_keys.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/di.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/widgets/gradient_background.dart';
 
@@ -52,11 +55,18 @@ class OnboardingScreen extends StatelessWidget {
                       const Spacer(),
                       CustomElevatedButton(
                         isSingleColor: true,
-                        onTap:
-                            () => Navigator.pushReplacementNamed(
-                              context,
-                              AppRoutes.login,
-                            ),
+                        onTap: () {
+                          getIt<SharedPreferences>()
+                              .setBool(AppKeys.onboardingSeen, true)
+                              .then((_) {
+                                if (context.mounted) {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    AppRoutes.login,
+                                  );
+                                }
+                              });
+                        },
                         text: AppStrings.getStarted.tr(),
                       ),
                     ],
