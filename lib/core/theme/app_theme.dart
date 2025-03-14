@@ -27,6 +27,18 @@ class AppTheme {
         ),
       ),
     ),
+    listTileTheme: ListTileThemeData(
+      tileColor: AppColors.lightGrey,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+      textColor: AppColors.darkBlue,
+      iconColor: AppColors.darkBlue,
+      titleTextStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+    ),
+    cardTheme: CardTheme(
+      color: AppColors.lightGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+    ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         textStyle: TextStyle(
