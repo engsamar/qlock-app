@@ -46,7 +46,42 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.post(path, data: body, queryParameters: queryParameters);
+      final response = await _dio.post(
+        path,
+        data: body,
+        queryParameters: queryParameters,
+      );
+
+      final responseData = response.data as Map<String, dynamic>;
+      final data = _parseData<T, M>(responseData[ApiKeys.dataKey], fromJson);
+      final pagination =
+          responseData[ApiKeys.paginationKey] != null
+              ? PaginationModel.fromJson(responseData[ApiKeys.paginationKey])
+              : null;
+
+      return Right(ResourceModel<T>(data: data, pagination: pagination));
+    } on DioException catch (e) {
+      return Left(handleDioError(e));
+    } catch (e) {
+      return Left(
+        ServerFailure(message: AppStrings.unexpectedError.tr() + e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, ResourceModel<T>>> postFormData<T, M>({
+    required String path,
+    required M Function(Map<String, dynamic>) fromJson,
+    required FormData formData,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final response = await _dio.post(
+        path,
+        data: formData,
+        queryParameters: queryParameters,
+        options: Options(contentType: 'multipart/form-data'),
+      );
 
       final responseData = response.data as Map<String, dynamic>;
       final data = _parseData<T, M>(responseData[ApiKeys.dataKey], fromJson);
