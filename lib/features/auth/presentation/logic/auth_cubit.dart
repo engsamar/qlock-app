@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:q_lock/core/constants/app_keys.dart';
 import 'package:q_lock/core/network/api_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/models/user_model.dart';
 import '../../data/repos/auth_repository.dart';
 import 'auth_state.dart';
@@ -28,9 +29,18 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
+  /// Updates the current authenticated user data
+  /// This is called by other cubits when user data changes
   void syncUserData(UserModel updatedUser) {
     final currentState = state;
     if (currentState is AuthenticatedState) {
+      // Update local storage
+      _sharedPreferences.setString(
+        AppKeys.userModel,
+        json.encode(updatedUser.toJson()),
+      );
+
+      // Update state
       emit(AuthenticatedState(user: updatedUser));
     }
   }
