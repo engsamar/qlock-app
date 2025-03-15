@@ -29,7 +29,26 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
       if (context.read<AuthCubit>().state is AuthenticatedState) {
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        if ((context.read<AuthCubit>().state as AuthenticatedState)
+                    .user
+                    .publicKey ==
+                null ||
+            (context.read<AuthCubit>().state as AuthenticatedState)
+                    .user
+                    .publicKey ==
+                '' ||
+            (context.read<AuthCubit>().state as AuthenticatedState)
+                    .user
+                    .privateKey ==
+                null ||
+            (context.read<AuthCubit>().state as AuthenticatedState)
+                    .user
+                    .privateKey ==
+                '') {
+          Navigator.pushReplacementNamed(context, AppRoutes.completeProfile);
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
+        }
       } else {
         if (getIt<SharedPreferences>().getBool(AppKeys.onboardingSeen) ==
             false) {

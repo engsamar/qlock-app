@@ -50,7 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushNamed(
             context,
             AppRoutes.otp,
-            arguments: {'phoneNumber': _phoneController.text},
+            arguments: {
+              'phoneNumber': _phoneController.text,
+              'code': state.code,
+            },
           );
         }
       },

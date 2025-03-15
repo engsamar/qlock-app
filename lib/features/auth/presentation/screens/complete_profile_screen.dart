@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:q_lock/core/routes/app_routes.dart';
 
@@ -7,11 +8,11 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/gradient_background.dart';
+import '../logic/auth_cubit.dart';
+import '../logic/auth_state.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
-  final String phoneNumber;
-
-  const CompleteProfileScreen({super.key, required this.phoneNumber});
+  const CompleteProfileScreen({super.key});
 
   @override
   State<CompleteProfileScreen> createState() => _CompleteProfileScreenState();
@@ -129,7 +130,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                           TextField(
                             enabled: false,
                             controller: TextEditingController(
-                              text: widget.phoneNumber,
+                              text:
+                                  (context.read<AuthCubit>().state
+                                          as AuthenticatedState)
+                                      .user
+                                      .mobile,
                             ),
                           ),
                         ],
