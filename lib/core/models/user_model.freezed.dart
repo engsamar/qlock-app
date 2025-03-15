@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String get id; String get mobile; String? get name; String? get image; String? get privateKey; String? get publicKey;
+ int get id; String get mobile; String? get name; String? get image; String? get privateKey; String? get publicKey;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -47,7 +47,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String mobile, String? name, String? image, String? privateKey, String? publicKey
+ int id, String mobile, String? name, String? image, String? privateKey, String? publicKey
 });
 
 
@@ -67,7 +67,7 @@ class _$UserModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? mobile = null,Object? name = freezed,Object? image = freezed,Object? privateKey = freezed,Object? publicKey = freezed,}) {
   return _then(UserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,mobile: null == mobile ? _self.mobile : mobile // ignore: cast_nullable_to_non_nullable
+as int,mobile: null == mobile ? _self.mobile : mobile // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as String?,privateKey: freezed == privateKey ? _self.privateKey : privateKey // ignore: cast_nullable_to_non_nullable

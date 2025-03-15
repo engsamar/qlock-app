@@ -7,7 +7,7 @@ part 'user_model.g.dart';
 @freezed
 @JsonSerializable()
  class UserModel with _$UserModel {
-  final String id;
+  final int id;
   final String mobile;
   final String? name;
   final String? image;
