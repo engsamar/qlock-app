@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:q_lock/features/home/presentation/screens/home_screen.dart';
+
 import '../../features/auth/presentation/screens/complete_profile_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_screen.dart';
@@ -25,25 +26,22 @@ class AppRoutes {
       case otp:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (_) => OTPScreen(
-            phoneNumber: args['phoneNumber'],
-            code: args['code'],
-          ),
+          builder:
+              (_) => OTPScreen(
+                phoneNumber: args['phoneNumber'],
+                code: args['code'],
+              ),
         );
       case completeProfile:
-        return MaterialPageRoute(
-          builder: (_) => CompleteProfileScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => CompleteProfileScreen());
       case home:
-        return MaterialPageRoute(
-          builder: (_) => HomeScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       default:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('Route not found!')),
-          ),
+          builder:
+              (_) =>
+                  const Scaffold(body: Center(child: Text('Route not found!'))),
         );
     }
   }
-} 
+}
