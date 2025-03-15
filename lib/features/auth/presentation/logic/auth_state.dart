@@ -1,21 +1,11 @@
 import '../../../../core/models/user_model.dart';
 
-sealed class AuthState {
+abstract class AuthState {
   const AuthState();
 }
 
 class AuthInitialState extends AuthState {
   const AuthInitialState();
-}
-
-class AuthenticatedState extends AuthState {
-  final UserModel user;
-
-  const AuthenticatedState({required this.user});
-}
-
-class UnauthenticatedState extends AuthState {
-  const UnauthenticatedState();
 }
 
 class AuthLoadingState extends AuthState {
@@ -36,4 +26,14 @@ class OtpSentState extends AuthState {
 
 class OtpVerificationInProgressState extends AuthState {
   const OtpVerificationInProgressState();
+}
+
+class UnauthenticatedState extends AuthState {
+  const UnauthenticatedState();
+}
+
+class AuthenticatedState extends AuthState {
+  final UserModel user;
+
+  const AuthenticatedState({required this.user});
 }
