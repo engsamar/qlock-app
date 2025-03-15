@@ -94,11 +94,30 @@ class _OTPScreenState extends State<OTPScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthenticatedState) {
-          Navigator.pushReplacementNamed(
-            context,
-            AppRoutes.completeProfile,
-            arguments: {'phoneNumber': widget.phoneNumber},
-          );
+          if ((context.read<AuthCubit>().state as AuthenticatedState)
+                      .user
+                      .publicKey ==
+                  null ||
+              (context.read<AuthCubit>().state as AuthenticatedState)
+                      .user
+                      .publicKey ==
+                  '' ||
+              (context.read<AuthCubit>().state as AuthenticatedState)
+                      .user
+                      .privateKey ==
+                  null ||
+              (context.read<AuthCubit>().state as AuthenticatedState)
+                      .user
+                      .privateKey ==
+                  '') {
+            Navigator.pushReplacementNamed(
+              context,
+              AppRoutes.completeProfile,
+              arguments: {'phoneNumber': widget.phoneNumber},
+            );
+          } else {
+            Navigator.pushReplacementNamed(context, AppRoutes.home);
+          }
         }
       },
       child: Scaffold(
