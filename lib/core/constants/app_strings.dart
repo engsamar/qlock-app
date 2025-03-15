@@ -15,6 +15,9 @@ class AppStrings {
   static const phoneNumberRequired = 'phone_number_required';
   static const phoneNumberInvalid = 'phone_number_invalid';
 
+  // General
+  static const loading = 'loading';
+
   // OTP Screen
   static const otp = 'otp';
   static const enterOtp = 'enter_otp';
@@ -26,6 +29,10 @@ class AppStrings {
   static const enterUsername = 'enter_username';
   static const phoneNumber = 'phone_number';
   static const changePicture = 'change_picture';
+  static const profileCompletedSuccess = 'profile_completed_success';
+  static const profileUpdatedSuccess = 'profile_updated_success';
+  static const noChangesDetected = 'no_changes_detected';
+  static const update = 'update';
 
   // Home Screen
   static const chats = 'chats';
@@ -46,6 +53,8 @@ class AppStrings {
   static const inviteFriends = 'invite_friends';
   static const aboutApp = 'about_app';
   static const logout = 'logout';
+  static const logoutConfirmation = 'logout_confirmation';
+  static const cancel = 'cancel';
 
   // network error
   static const unexpectedError = 'unexpected_error';

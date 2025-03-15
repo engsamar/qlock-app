@@ -7,6 +7,7 @@
   "enter_phone": "Enter Your Phone Number",
   "sms_code_info": "You will get a code via sms.",
   "next": "Next",
+  "loading": "Loading...",
   "otp": "OTP",
   "enter_otp": "Enter OTP Code Sent to",
   "resend_code": "Resend Code",
@@ -29,6 +30,8 @@
   "invite_friends": "Invite Friends",
   "about_app": "About App",
   "logout": "Logout",
+  "logout_confirmation": "Are you sure you want to logout?",
+  "cancel": "Cancel",
   "unexpected_error": "Unexpected error: ",
   "expected_list_error": "Expected a List but got ",
   "expected_map_error": "Expected Map but got ",
@@ -38,5 +41,9 @@
   "request_cancelled_error": "Request to server was cancelled.",
   "unexpected_server_error": "An unexpected error occurred.",
   "phone_number_required": "Phone number is required.",
-  "phone_number_invalid": "Phone number is invalid."
+  "phone_number_invalid": "Phone number is invalid.",
+  "profile_completed_success": "Profile completed successfully!",
+  "profile_updated_success": "Profile updated successfully!",
+  "no_changes_detected": "No changes detected",
+  "update": "Update"
 }
