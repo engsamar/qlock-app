@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:q_lock/features/auth/data/repos/auth_repository.dart';
+import 'package:q_lock/features/profile/data/repos/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'network/dio_client.dart';
@@ -27,7 +28,13 @@ setupDI() async {
     ],
   );
   getIt.registerLazySingleton<DioClient>(() => DioClient(dio));
+
+  // Repositories
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(dioClient: getIt()),
+  );
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepository(dioClient: getIt()),
   );
 }
