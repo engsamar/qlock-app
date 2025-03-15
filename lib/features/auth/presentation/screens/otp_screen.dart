@@ -64,14 +64,13 @@ class _OTPScreenState extends State<OTPScreen> {
     }
 
     if (_controllers.every((controller) => controller.text.isNotEmpty)) {
-      _verifyOTP();
+      for (var node in _focusNodes) {
+        node.unfocus();
+      }
     }
   }
 
   void _verifyOTP() {
-    for (var node in _focusNodes) {
-      node.unfocus();
-    }
     context.read<AuthCubit>().verifyOtpCode(
       phoneNumber: widget.phoneNumber,
       otp: _controllers.map((e) => e.text).join(''),
@@ -221,9 +220,16 @@ class _OTPScreenState extends State<OTPScreen> {
                         child: Column(
                           children: [
                             Expanded(child: SizedBox()),
-                            CustomElevatedButton(
-                              onTap: _verifyOTP,
-                              text: AppStrings.next.tr(),
+                            BlocBuilder<AuthCubit, AuthState>(
+                              builder: (context, state) {
+                                bool isLoading =
+                                    state is OtpVerificationInProgressState;
+                                return CustomElevatedButton(
+                                  onTap: isLoading ? null : _verifyOTP,
+                                  isLoading: isLoading,
+                                  text: AppStrings.next.tr(),
+                                );
+                              },
                             ),
                             const SizedBox(height: 24),
                           ],
