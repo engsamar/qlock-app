@@ -16,7 +16,7 @@ class AuthRepository {
     required String phoneNumber,
   }) async {
     return _dioClient.post(
-      path: ApiEndpoints.verifyMobile,
+      path: ApiEndpoints.validateMobile,
       body: {'mobile': phoneNumber},
       fromJson: (json) {
         return json['code'];
