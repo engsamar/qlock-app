@@ -90,7 +90,7 @@ class SettingsContent extends StatelessWidget {
               child: ListTile(
                 iconColor: AppColors.red,
                 textColor: AppColors.red,
-                leading: Icon(CustomIcons.logout),
+                leading: Icon(Icons.logout),
                 title: Text(AppStrings.logout.tr()),
                 onTap: () => _showLogoutConfirmation(context),
               ),
