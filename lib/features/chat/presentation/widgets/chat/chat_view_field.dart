@@ -60,9 +60,13 @@ class _ChatViewFieldState extends State<ChatViewField> {
   }
 
   void _sendTextMessage() {
+    // Check if the trimmed text is not empty
+    final trimmedText = _messageController.text.trim();
+    if (trimmedText.isEmpty) return;
+
     context.read<ChatCubit>().sendMessage(
       chatId: widget.chat.id,
-      message: _messageController.text,
+      message: trimmedText,
       type: MessageType.text,
       sender: context.read<AuthCubit>().currentUser!,
       myPublicKey: decodePublicKeyFromString(
@@ -72,6 +76,9 @@ class _ChatViewFieldState extends State<ChatViewField> {
         widget.chat.user.publicKey ?? '',
       ),
     );
+
+    // Clear the text field after sending
+    _messageController.clear();
   }
 
   Future<void> _pickMedia(
