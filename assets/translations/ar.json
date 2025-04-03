@@ -28,6 +28,8 @@
   "read": "مقروءة",
   "unread": "غير مقروءة",
   "no_chats_yet": "لا توجد محادثات بعد",
+  "no_read_chats_yet": "لا توجد محادثات مقروءة بعد",
+  "no_unread_chats_yet": "لا توجد محادثات غير مقروءة بعد",
   "language": "اللغة",
   "custom_notifications": "تخصيص الإشعارات",
   "mute_notifications": "كتم الإشعارات",

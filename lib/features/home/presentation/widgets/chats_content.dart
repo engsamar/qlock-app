@@ -8,8 +8,11 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/custom_icons.dart';
 import '../../../../core/di.dart';
 import '../../../auth/presentation/logic/auth_cubit.dart';
-import 'rooms/rooms_view_body.dart';
+import '../../../home/data/models/room_model.dart';
 import '../logic/rooms/rooms_cubit.dart';
+import '../logic/rooms/rooms_state.dart';
+import 'rooms/rooms_view_body.dart';
+import 'rooms/rooms_view_success.dart';
 
 class ChatsContent extends StatefulWidget {
   const ChatsContent({super.key});
@@ -20,6 +23,7 @@ class ChatsContent extends StatefulWidget {
 
 class _ChatsContentState extends State<ChatsContent> {
   int _selectedTabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -57,117 +61,117 @@ class _ChatsContentState extends State<ChatsContent> {
             padding: EdgeInsets.all(16.r),
             child: Row(
               children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTabIndex = 0;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      decoration:
-                          _selectedTabIndex == 0
-                              ? BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(24.r),
-                              )
-                              : null,
-                      child: Center(
-                        child: Text(
-                          AppStrings.all.tr(),
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color:
-                                _selectedTabIndex == 0
-                                    ? AppColors.white
-                                    : AppColors.darkBlue.withValues(alpha: .5),
-                            fontWeight: FontWeight.w500,
+                for (int i = 0; i < 3; i++)
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedTabIndex = i;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 8.h,
+                        ),
+                        decoration:
+                            _selectedTabIndex == i
+                                ? BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(24.r),
+                                )
+                                : null,
+                        child: Center(
+                          child: Text(
+                            i == 0
+                                ? AppStrings.all.tr()
+                                : i == 1
+                                ? AppStrings.read.tr()
+                                : AppStrings.unread.tr(),
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color:
+                                  _selectedTabIndex == i
+                                      ? AppColors.white
+                                      : AppColors.darkBlue.withValues(
+                                        alpha: .5,
+                                      ),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTabIndex = 1;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      decoration:
-                          _selectedTabIndex == 1
-                              ? BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(24.r),
-                              )
-                              : null,
-                      child: Center(
-                        child: Text(
-                          AppStrings.read.tr(),
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color:
-                                _selectedTabIndex == 1
-                                    ? AppColors.white
-                                    : AppColors.darkBlue.withValues(alpha: .5),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTabIndex = 2;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      decoration:
-                          _selectedTabIndex == 2
-                              ? BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(24.r),
-                              )
-                              : null,
-                      child: Center(
-                        child: Text(
-                          AppStrings.unread.tr(),
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color:
-                                _selectedTabIndex == 2
-                                    ? AppColors.white
-                                    : AppColors.darkBlue.withValues(alpha: .5),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
-          Expanded(child: RoomsViewBody()),
+          Expanded(
+            child: BlocBuilder<RoomsCubit, RoomsState>(
+              builder: (context, state) {
+                if (state is RoomsLoadedState) {
+                  // Filter rooms based on the selected tab
+                  final List<RoomModel> filteredRooms = _filterRooms(
+                    state.rooms,
+                  );
+                  return _buildFilteredRoomsView(filteredRooms, context);
+                }
+                return RoomsViewBody();
+              },
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  List<RoomModel> _filterRooms(List<RoomModel> rooms) {
+    switch (_selectedTabIndex) {
+      case 0: // All rooms
+        return rooms;
+      case 1: // Read rooms
+        return rooms
+            .where(
+              (room) => room.unreadMessages == null || room.unreadMessages == 0,
+            )
+            .toList();
+      case 2: // Unread rooms
+        return rooms
+            .where(
+              (room) => room.unreadMessages != null && room.unreadMessages! > 0,
+            )
+            .toList();
+      default:
+        return rooms;
+    }
+  }
+
+  Widget _buildFilteredRoomsView(
+    List<RoomModel> filteredRooms,
+    BuildContext context,
+  ) {
+    final currentUserId = context.read<AuthCubit>().currentUser!.id;
+
+    if (filteredRooms.isEmpty) {
+      return Center(
+        child: Text(
+          _getEmptyStateMessage(),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.darkBlue),
+        ),
+      );
+    }
+
+    return RoomsViewSuccess(rooms: filteredRooms, currentUserId: currentUserId);
+  }
+
+  String _getEmptyStateMessage() {
+    switch (_selectedTabIndex) {
+      case 1:
+        return AppStrings.noReadChatsYet.tr();
+      case 2:
+        return AppStrings.noUnreadChatsYet.tr();
+      default:
+        return AppStrings.noChatsYet.tr();
+    }
   }
 }

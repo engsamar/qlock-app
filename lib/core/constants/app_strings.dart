@@ -49,6 +49,9 @@ class AppStrings {
   static const read = 'read';
   static const unread = 'unread';
   static const noChatsYet = 'no_chats_yet';
+  static const noReadChatsYet = 'no_read_chats_yet';
+  static const noUnreadChatsYet = 'no_unread_chats_yet';
+
 
   // Settings Screen
   static const language = 'language';

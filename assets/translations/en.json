@@ -28,6 +28,8 @@
   "read": "Read",
   "unread": "Unread",
   "no_chats_yet": "You haven't chat yet",
+  "no_read_chats_yet": "You haven't read any chats yet",
+  "no_unread_chats_yet": "You haven't unread any chats yet",
   "language": "Language",
   "custom_notifications": "Custom Notifications",
   "mute_notifications": "Mute Notifications",
