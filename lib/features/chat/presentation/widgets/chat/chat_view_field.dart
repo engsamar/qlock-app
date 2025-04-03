@@ -192,7 +192,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
       const int maxBase64Size =
           20 * 1024; // 20KB for binary data (becomes ~27KB as base64)
 
-      print("Compressed image size: ${finalImageBytes.length} bytes");
 
       // Progressive compression - keep reducing quality/size until it fits
       int attemptCount = 0;
@@ -223,9 +222,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
           1000,
         ); // Allow height as low as 200px
 
-        print(
-          "Compression attempt $attemptCount: Quality=$currentQuality, Width=$currentWidth, Height=$currentHeight",
-        );
 
         final recompressedBytes = await FlutterImageCompress.compressWithList(
           finalImageBytes,
@@ -236,9 +232,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
         );
 
         finalImageBytes = recompressedBytes;
-        print(
-          "New size after attempt $attemptCount: ${finalImageBytes.length} bytes",
-        );
       }
 
       // Final size check - abort if still too large
@@ -258,14 +251,12 @@ class _ChatViewFieldState extends State<ChatViewField> {
         return;
       }
 
-      print("Final base64 string length: ${base64String.length}");
 
       if (!mounted) return;
 
       // Send the message
       _sendMessage(message: base64String, type: MessageType.image);
     } catch (e) {
-      print("Error in image processing: $e");
       if (mounted) {
         _showSnackBar('${AppStrings.errorProcessingImage.tr()}${e.toString()}');
       }

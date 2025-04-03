@@ -7,7 +7,6 @@ import 'package:q_lock/features/home/presentation/logic/contacts/contacts_cubit.
 import 'package:q_lock/features/profile/data/repos/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../features/chat/data/repos/chat_repository.dart';
 import '../features/home/data/repository/rooms_repository.dart';
 import 'network/dio_client.dart';
 import 'network/dio_config.dart';
