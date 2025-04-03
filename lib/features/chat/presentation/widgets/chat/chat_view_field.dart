@@ -54,7 +54,8 @@ class _ChatViewFieldState extends State<ChatViewField> {
       child: Row(
         children: [
           IconButton(
-            onPressed: () => _showMediaOptions(context),
+            onPressed: () {},
+            //  => _showMediaOptions(context),
             icon: const Icon(Icons.add),
           ),
           Expanded(

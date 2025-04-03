@@ -28,14 +28,14 @@ class ChatAppBarTitle extends StatelessWidget {
                   color: AppColors.darkBlue,
                 ),
               ),
-              Text(
-                'online',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                  color: AppColors.darkGrey,
-                ),
-              ),
+              // Text(
+              //   'online',
+              //   style: TextStyle(
+              //     fontSize: 12,
+              //     fontWeight: FontWeight.normal,
+              //     color: AppColors.darkGrey,
+              //   ),
+              // ),
             ],
           ),
         ),
