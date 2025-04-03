@@ -45,5 +45,13 @@
   "profile_completed_success": "Profile completed successfully!",
   "profile_updated_success": "Profile updated successfully!",
   "no_changes_detected": "No changes detected",
-  "update": "Update"
+  "update": "Update",
+  "contacts": "Contacts",
+  "no_contacts_with_numbers": "No contacts with phone numbers found",
+  "permission_denied": "Permission denied",
+  "refresh_contacts": "Refresh Contacts",
+  "starting_conversation": "Starting conversation...",
+  "conversation_started": "Conversation started",
+  "conversation_failed": "Failed to start conversation",
+  "error_loading_contacts": "Error loading contacts"
 }

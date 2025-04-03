@@ -45,5 +45,13 @@
   "profile_completed_success": "تم استكمال الملف الشخصي بنجاح!",
   "profile_updated_success": "تم تحديث الملف الشخصي بنجاح!",
   "no_changes_detected": "لم يتم اكتشاف أي تغييرات",
-  "update": "تحديث"
+  "update": "تحديث",
+  "contacts": "جهات الاتصال",
+  "no_contacts_with_numbers": "لم يتم العثور على جهات اتصال بأرقام هواتف",
+  "permission_denied": "تم رفض الإذن",
+  "refresh_contacts": "تحديث جهات الاتصال",
+  "starting_conversation": "بدء المحادثة...",
+  "conversation_started": "بدأت المحادثة",
+  "conversation_failed": "فشل بدء المحادثة",
+  "error_loading_contacts": "خطأ في تحميل جهات الاتصال"
 }

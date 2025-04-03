@@ -65,4 +65,19 @@ class AppStrings {
   static const serverError = 'server_error';
   static const requestCancelledError = 'request_cancelled_error';
   static const unexpectedServerError = 'unexpected_server_error';
+  static const today = 'today';
+  static const yesterday = 'yesterday';
+  static const sendMessageHint = 'send_message_hint';
+  static const imageNotFound = 'image_not_found';
+  static const failedToLoadImage = 'failed_to_load_image';
+
+  // Contacts Screen
+  static const contacts = 'contacts';
+  static const noContactsWithNumbers = 'no_contacts_with_numbers';
+  static const permissionDenied = 'permission_denied';
+  static const refreshContacts = 'refresh_contacts';
+  static const startingConversation = 'starting_conversation';
+  static const conversationStarted = 'conversation_started';
+  static const conversationFailed = 'conversation_failed';
+  static const errorLoadingContacts = 'error_loading_contacts';
 }

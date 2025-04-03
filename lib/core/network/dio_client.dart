@@ -51,7 +51,6 @@ class DioClient {
         data: body,
         queryParameters: queryParameters,
       );
-
       final responseData = response.data as Map<String, dynamic>;
       final data = _parseData<T, M>(responseData[ApiKeys.dataKey], fromJson);
       final pagination =

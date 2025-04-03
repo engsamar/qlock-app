@@ -6,6 +6,7 @@ import 'package:q_lock/features/home/presentation/widgets/settings_content.dart'
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../widgets/chats_content.dart';
 import '../widgets/profile_content.dart';
 
@@ -30,6 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: GradientBackground(
         child: SafeArea(child: _screens[_selectedBottomIndex]),
       ),
+      floatingActionButton:
+          _selectedBottomIndex == 0
+              ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.contacts);
+                },
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.person_add, color: AppColors.white),
+              )
+              : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
           setState(() {

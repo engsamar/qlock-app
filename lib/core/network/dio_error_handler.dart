@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -17,8 +15,6 @@ Failure handleDioError(DioException error) {
       return ConnectionFailure(message: AppStrings.checkInternetError.tr());
 
     case DioExceptionType.badResponse:
-      log('**//** Bad Response: ${error.response?.data}');
-      log('**//** Bad Response: ${error.response?.data.runtimeType}');
       if (error.response?.data is Map<String, dynamic>) {
         final message =
             error.response?.data?['message'] ?? AppStrings.serverError.tr();

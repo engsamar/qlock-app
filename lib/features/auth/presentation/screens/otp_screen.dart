@@ -109,13 +109,18 @@ class _OTPScreenState extends State<OTPScreen> {
                       .user
                       .privateKey ==
                   '') {
-            Navigator.pushReplacementNamed(
+            Navigator.pushNamedAndRemoveUntil(
               context,
               AppRoutes.completeProfile,
+              (route) => false,
               arguments: {'phoneNumber': widget.phoneNumber},
             );
           } else {
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.home,
+              (route) => false,
+            );
           }
         }
       },

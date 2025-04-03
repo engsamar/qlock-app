@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "766785331479",
+    "firebase_url": "https://qlock-59277-default-rtdb.firebaseio.com",
+    "project_id": "qlock-59277",
+    "storage_bucket": "qlock-59277.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766785331479:android:174cec5b85fc4f5d9b5752",
+        "android_client_info": {
+          "package_name": "com.example.q_lock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8Ed94yx8q1XemwjtSWsf7jo3gNwV2dyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
