@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:q_lock/core/constants/app_strings.dart';
 import 'package:q_lock/core/di.dart';
 import 'package:q_lock/features/auth/presentation/logic/auth_cubit.dart';
 
@@ -14,9 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupDI();
 
   runApp(
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
                   AuthCubit(authRepository: getIt(), sharedPreferences: getIt())
                     ..checkAuthStatus(),
           child: MaterialApp(
-            title: 'QLock',
+            title: AppStrings.appName.tr(),
             theme: AppTheme.lightTheme,
             initialRoute: AppRoutes.splash,
             onGenerateRoute: AppRoutes.onGenerateRoute,

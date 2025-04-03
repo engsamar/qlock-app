@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,7 +64,8 @@ class MessageImageItem extends StatelessWidget {
             height: size,
             fit: BoxFit.cover,
             errorWidget:
-                (context, url, error) => _ImageError(AppStrings.imageNotFound),
+                (context, url, error) =>
+                    _ImageError(AppStrings.imageNotFound.tr()),
           )
         else if (isLocalFile)
           Image.file(
@@ -73,7 +75,7 @@ class MessageImageItem extends StatelessWidget {
             fit: BoxFit.cover,
             errorBuilder:
                 (context, error, stackTrace) =>
-                    _ImageError(AppStrings.failedToLoadImage),
+                    _ImageError(AppStrings.failedToLoadImage.tr()),
           )
         else if (isBase64Image && imageBytes != null)
           Image.memory(
@@ -83,10 +85,10 @@ class MessageImageItem extends StatelessWidget {
             fit: BoxFit.cover,
             errorBuilder:
                 (context, error, stackTrace) =>
-                    _ImageError(AppStrings.failedToLoadImage),
+                    _ImageError(AppStrings.failedToLoadImage.tr()),
           )
         else
-          _ImageError(AppStrings.failedToLoadImage),
+          _ImageError(AppStrings.failedToLoadImage.tr()),
         if (message.message.receiver.isNotEmpty && !isBase64Image) ...[
           const SizedBox(height: 4),
           MessageTextItem(message: message.message, isMyMessage: isMyMessage),

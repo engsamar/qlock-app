@@ -8,6 +8,10 @@
   "sms_code_info": "ستحصل على رمز عبر الرسائل القصيرة.",
   "next": "التالي",
   "loading": "جاري التحميل...",
+  "route_not_found": "الصفحة غير موجودة!",
+  "error_picking_image": "خطأ في اختيار الصورة: ",
+  "please_login_to_view_profile": "يرجى تسجيل الدخول لعرض ملفك الشخصي",
+  "send_image": "إرسال صورة",
   "otp": "رمز التحقق",
   "enter_otp": "أدخل رمز التحقق المرسل إلى",
   "resend_code": "إعادة إرسال الرمز",
@@ -54,5 +58,14 @@
   "conversation_started": "بدأت المحادثة",
   "conversation_failed": "فشل بدء المحادثة",
   "error_loading_contacts": "خطأ في تحميل جهات الاتصال",
-  "waiting_for_message": "جاري الانتظار للرسالة..."
+  "waiting_for_message": "جاري الانتظار للرسالة...",
+  "send_message_hint": "اكتب رسالة...",
+  "failed_to_compress_image": "فشل في ضغط الصورة",
+  "image_too_large": "الصورة كبيرة جدًا للإرسال حتى بعد الضغط. يرجى اختيار صورة أصغر.",
+  "encoded_image_too_large": "الصورة المشفرة كبيرة جدًا للإرسال. يرجى اختيار صورة أصغر.",
+  "error_processing_image": "خطأ في معالجة الصورة: ",
+  "image_not_found": "الصورة غير موجودة",
+  "failed_to_load_image": "فشل في تحميل الصورة",
+  "today": "اليوم",
+  "yesterday": "أمس"
 }

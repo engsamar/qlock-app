@@ -33,11 +33,11 @@ class ChatViewMessageItem extends StatelessWidget {
               isMyMessage
                   ? AppColors.myMessageColor
                   : AppColors.otherMessageColor,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(12),
-            topRight: const Radius.circular(12),
-            bottomLeft: isMyMessage ? const Radius.circular(12) : Radius.zero,
-            bottomRight: isMyMessage ? Radius.zero : const Radius.circular(12),
+          borderRadius: BorderRadiusDirectional.only(
+            topStart: const Radius.circular(12),
+            topEnd: const Radius.circular(12),
+            bottomStart: isMyMessage ? const Radius.circular(12) : Radius.zero,
+            bottomEnd: isMyMessage ? Radius.zero : const Radius.circular(12),
           ),
           boxShadow: [
             BoxShadow(

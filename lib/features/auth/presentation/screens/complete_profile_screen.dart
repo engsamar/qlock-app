@@ -49,9 +49,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${AppStrings.errorPickingImage.tr()}$e')),
+      );
     }
   }
 

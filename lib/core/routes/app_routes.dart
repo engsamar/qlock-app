@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:q_lock/features/home/presentation/screens/contacts_screen.dart';
 import 'package:q_lock/features/home/presentation/screens/home_screen.dart';
@@ -9,6 +10,7 @@ import '../../features/chat/presentation/views/chat_view.dart';
 import '../../features/home/data/models/room_model.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
+import '../constants/app_strings.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -49,8 +51,9 @@ class AppRoutes {
       default:
         return MaterialPageRoute(
           builder:
-              (_) =>
-                  const Scaffold(body: Center(child: Text('Route not found!'))),
+              (_) => Scaffold(
+                body: Center(child: Text(AppStrings.routeNotFound.tr())),
+              ),
         );
     }
   }

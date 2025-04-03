@@ -8,6 +8,10 @@
   "sms_code_info": "You will get a code via sms.",
   "next": "Next",
   "loading": "Loading...",
+  "route_not_found": "Route not found!",
+  "error_picking_image": "Error picking image: ",
+  "please_login_to_view_profile": "Please login to view your profile",
+  "send_image": "Send Image",
   "otp": "OTP",
   "enter_otp": "Enter OTP Code Sent to",
   "resend_code": "Resend Code",
@@ -54,5 +58,14 @@
   "conversation_started": "Conversation started",
   "conversation_failed": "Failed to start conversation",
   "error_loading_contacts": "Error loading contacts",
-  "waiting_for_message": "Waiting for message..."
+  "waiting_for_message": "Waiting for message...",
+  "send_message_hint": "Type a message...",
+  "failed_to_compress_image": "Failed to compress image",
+  "image_too_large": "Image is too large to send even after compression. Please select a smaller image.",
+  "encoded_image_too_large": "Encoded image is too large to send. Please select a smaller image.",
+  "error_processing_image": "Error processing image: ",
+  "image_not_found": "Image not found",
+  "failed_to_load_image": "Failed to load image",
+  "today": "Today",
+  "yesterday": "Yesterday"
 }

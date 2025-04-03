@@ -42,7 +42,7 @@ class ChatViewDateItem extends StatelessWidget {
     } else if (DateUtils.isSameDay(date, yesterday)) {
       return AppStrings.yesterday.tr();
     } else {
-      return DateFormat('dd MMM yyyy', context.locale.countryCode).format(date);
+      return DateFormat('dd MMM yyyy', context.locale.languageCode).format(date);
     }
   }
 }

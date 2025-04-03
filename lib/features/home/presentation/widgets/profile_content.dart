@@ -52,9 +52,9 @@ class _ProfileContentState extends State<ProfileContent> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${AppStrings.errorPickingImage.tr()}$e')),
+        );
       }
     }
   }
@@ -215,8 +215,8 @@ class _ProfileContentState extends State<ProfileContent> {
                 }
 
                 // Fallback if not authenticated (shouldn't happen normally)
-                return const Center(
-                  child: Text('Please login to view your profile'),
+                return Center(
+                  child: Text(AppStrings.pleaseLoginToViewProfile.tr()),
                 );
               },
             ),

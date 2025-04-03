@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/functions.dart';
 import '../../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../../home/data/models/room_model.dart';
@@ -67,7 +69,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                   border: InputBorder.none,
-                  hintText: 'Type a message...',
+                  hintText: AppStrings.sendMessageHint.tr(),
                   hintStyle: TextStyle(color: AppColors.darkGrey),
                 ),
               ),
@@ -113,7 +115,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
             children: [
               ListTile(
                 leading: const Icon(Icons.photo),
-                title: const Text('Send Image'),
+                title: Text(AppStrings.sendImage.tr()),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage();
@@ -141,7 +143,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
       await _processAndSendImage(file);
     } catch (e) {
       if (mounted) {
-        _showSnackBar('Error picking image: ${e.toString()}');
+        _showSnackBar('${AppStrings.errorPickingImage.tr()}${e.toString()}');
       }
     }
   }
@@ -178,7 +180,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
       if (!mounted) return;
 
       if (compressedBytes == null) {
-        _showSnackBar('Failed to compress image');
+        _showSnackBar(AppStrings.failedToCompressImage.tr());
         return;
       }
 
@@ -241,9 +243,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
       // Final size check - abort if still too large
       if (finalImageBytes.length > maxBase64Size) {
         if (mounted) {
-          _showSnackBar(
-            'Image is too large to send even after compression. Please select a smaller image.',
-          );
+          _showSnackBar(AppStrings.imageTooLarge.tr());
         }
         return;
       }
@@ -252,9 +252,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
       final base64String = base64Encode(finalImageBytes);
       if (base64String.length > 60 * 1024) {
         if (mounted) {
-          _showSnackBar(
-            'Encoded image is too large to send. Please select a smaller image.',
-          );
+          _showSnackBar(AppStrings.encodedImageTooLarge.tr());
         }
         return;
       }
@@ -268,7 +266,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
     } catch (e) {
       print("Error in image processing: $e");
       if (mounted) {
-        _showSnackBar('Error processing image: ${e.toString()}');
+        _showSnackBar('${AppStrings.errorProcessingImage.tr()}${e.toString()}');
       }
     }
   }

@@ -17,6 +17,10 @@ class AppStrings {
 
   // General
   static const loading = 'loading';
+  static const routeNotFound = 'route_not_found';
+  static const errorPickingImage = 'error_picking_image';
+  static const pleaseLoginToViewProfile = 'please_login_to_view_profile';
+  static const sendImage = 'send_image';
 
   // OTP Screen
   static const otp = 'otp';
@@ -70,6 +74,12 @@ class AppStrings {
   static const sendMessageHint = 'send_message_hint';
   static const imageNotFound = 'image_not_found';
   static const failedToLoadImage = 'failed_to_load_image';
+
+  // Chat view error messages
+  static const failedToCompressImage = 'failed_to_compress_image';
+  static const imageTooLarge = 'image_too_large';
+  static const encodedImageTooLarge = 'encoded_image_too_large';
+  static const errorProcessingImage = 'error_processing_image';
 
   // Contacts Screen
   static const contacts = 'contacts';
