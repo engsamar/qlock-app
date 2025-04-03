@@ -50,12 +50,12 @@ class _ChatViewFieldState extends State<ChatViewField> {
     return Container(
       width: double.infinity,
       height: 58.h,
-      color: AppColors.grey,
+      color: AppColors.chatFieldColor,
       child: Row(
         children: [
           IconButton(
             onPressed: () {},
-            //  => _showMediaOptions(context),
+            // onPressed: ()  => _showMediaOptions(context),
             icon: const Icon(Icons.add),
           ),
           Expanded(

@@ -9,6 +9,7 @@ class AppColors {
   static const Color darkBlue = Color(0xFF111827);
   static const Color myMessageColor = Color(0xFFC5BBDA);
   static const Color otherMessageColor = Color(0xFFFAFAFA);
+  static const Color chatFieldColor = Color(0xFFEBE8F2);
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color transparent = Colors.transparent;
