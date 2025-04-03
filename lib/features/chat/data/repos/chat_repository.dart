@@ -3,12 +3,20 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import '../../../../core/network/api_endpoints.dart';
+import '../../../../core/network/dio_client.dart';
 import '../../../../core/network/models/failure.dart';
 import '../models/message_model.dart';
 
 class ChatRepository {
   final FirebaseDatabase _database;
-  ChatRepository({required FirebaseDatabase database}) : _database = database;
+  final DioClient _dioClient;
+
+  ChatRepository({
+    required FirebaseDatabase database,
+    required DioClient dioClient,
+  }) : _database = database,
+       _dioClient = dioClient;
 
   Stream<Either<Failure, List<MessageModel>>> fetchMessages({
     required String chatId,
@@ -70,6 +78,23 @@ class ChatRepository {
       log('Error fetching messages: ${e.toString()}');
       yield Left(ServerFailure(message: e.toString()));
     }
+  }
+
+  Future<Either<Failure, void>> sendMessage({
+    required int chatId,
+    required String myMessage,
+    required String otherMessage,
+    required MessageType type,
+  }) async {
+    return _dioClient.post(
+      path: ApiEndpoints.messages,
+      fromJson: (_) => null,
+      body: {
+        'conversation_id': chatId,
+        'type': type.name,
+        'message': {'sender': myMessage, 'receiver': otherMessage},
+      },
+    );
   }
 
   Map<String, dynamic> _convertToStringDynamicMap(Map map) {

@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pointycastle/asymmetric/api.dart';
 
+import '../../../../core/functions.dart';
+import '../../../../core/models/user_model.dart';
 import '../../../../core/network/models/failure.dart';
 import '../../data/models/message_model.dart';
 import '../../data/repos/chat_repository.dart';
@@ -49,7 +52,7 @@ class ChatCubit extends Cubit<ChatState> {
               );
               currentMessages.removeWhere((message) {
                 return newMessages.any((e) {
-                  return e.id == message.id;
+                  return e.id == 121212121212;
                 });
               });
               final mergedMessages = [...newMessages, ...currentMessages];
@@ -58,6 +61,41 @@ class ChatCubit extends Cubit<ChatState> {
             },
           );
         });
+  }
+
+  sendMessage({
+    required int chatId,
+    required String message,
+    required RSAPublicKey myPublicKey,
+    required RSAPublicKey otherPublicKey,
+    required MessageType type,
+    required UserModel sender,
+  }) async {
+    final encryptedMessageForMe = encryptWithRSA(message, myPublicKey);
+    final encryptedMessageForOther = encryptWithRSA(message, otherPublicKey);
+
+    final messageModel = MessageModel(
+      id: 121212121212,
+      message: MessageContentModel(
+        sender: encryptedMessageForMe,
+        receiver: encryptedMessageForOther,
+      ),
+      status: 'sent',
+      type: type,
+      createdAt: DateTime.now(),
+      sender: sender,
+    );
+
+    emit(ChatLoadedState([messageModel, ..._getCurrentMessages()]));
+
+    final result = await _chatRepository.sendMessage(
+      chatId: chatId,
+      myMessage: encryptedMessageForMe,
+      otherMessage: encryptedMessageForOther,
+      type: type,
+    );
+
+    result.fold((failure) {}, (success) {});
   }
 
   @override

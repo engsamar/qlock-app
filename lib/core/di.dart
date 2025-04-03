@@ -58,7 +58,10 @@ Future<void> setupDI() async {
     );
 
   getIt.registerLazySingleton<ChatRepository>(
-    () => ChatRepository(database: getIt()),
+    () => ChatRepository(
+      database: getIt(),
+      dioClient: getIt(),
+    ),
   );
 
   // Register cubits/blocs

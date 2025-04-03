@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/functions.dart';
+import '../../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../../home/data/models/room_model.dart';
+import '../../../data/models/message_model.dart';
+import '../../logic/chat_cubit.dart';
 
 class ChatViewField extends StatefulWidget {
   const ChatViewField({super.key, required this.chat});
@@ -48,13 +53,26 @@ class _ChatViewFieldState extends State<ChatViewField> {
               ),
             ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.send_outlined)),
+          IconButton(onPressed: _sendTextMessage, icon: const Icon(Icons.send)),
         ],
       ),
     );
   }
 
-  void _sendTextMessage() {}
+  void _sendTextMessage() {
+    context.read<ChatCubit>().sendMessage(
+      chatId: widget.chat.id,
+      message: _messageController.text,
+      type: MessageType.text,
+      sender: context.read<AuthCubit>().currentUser!,
+      myPublicKey: decodePublicKeyFromString(
+        context.read<AuthCubit>().currentUser?.publicKey ?? '',
+      ),
+      otherPublicKey: decodePublicKeyFromString(
+        widget.chat.user.publicKey ?? '',
+      ),
+    );
+  }
 
   Future<void> _pickMedia(
     BuildContext context, {

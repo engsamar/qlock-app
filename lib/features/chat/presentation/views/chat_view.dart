@@ -53,7 +53,14 @@ class ChatView extends StatelessWidget {
         ),
         body: GradientBackground(
           gradientHeight: .1,
-          child: ChatViewBody(chat: chat),
+          child: Padding(
+            padding: EdgeInsets.only(
+              top:
+                  MediaQuery.of(context).padding.top +
+                  AppBar().preferredSize.height,
+            ),
+            child: ChatViewBody(chat: chat),
+          ),
         ),
       ),
     );
