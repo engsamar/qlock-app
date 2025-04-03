@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,18 +88,12 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(ChatLoadedState([messageModel, ..._getCurrentMessages()]));
 
-    final result = await _chatRepository.sendMessage(
+    await _chatRepository.sendMessage(
       chatId: chatId,
       myMessage: encryptedMessageForMe,
       otherMessage: encryptedMessageForOther,
       type: type,
     );
-
-    result.fold((failure) {
-      log('*/*/*/ failure: ${failure.message}');
-    }, (success) {
-      log('*/*/*/ success:');
-    });
   }
 
   @override

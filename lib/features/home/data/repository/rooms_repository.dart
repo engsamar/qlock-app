@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -51,12 +49,10 @@ class RoomsRepository {
                   // Create a RoomModel from the data
                   roomModels.add(RoomModel.fromJson(roomMap));
                 } catch (e) {
-                  log('Error parsing room data: ${e.toString()}');
                 }
               }
             });
           } else {
-            log('Unexpected data format: ${snapshotValue.runtimeType}');
           }
 
           // Sort rooms by last message timestamp (newest first)
@@ -70,7 +66,6 @@ class RoomsRepository {
         }
       }
     } catch (e) {
-      log('Error fetching rooms: ${e.toString()}');
       yield Left(ServerFailure(message: e.toString()));
     }
   }

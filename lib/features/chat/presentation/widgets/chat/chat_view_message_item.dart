@@ -36,7 +36,8 @@ class ChatViewMessageItem extends StatelessWidget {
           borderRadius: BorderRadiusDirectional.only(
             topStart: const Radius.circular(12),
             topEnd: const Radius.circular(12),
-            bottomStart: isMyMessage ? const Radius.circular(12) : Radius.zero,
+            bottomStart:
+                isMyMessage ? const Radius.circular(12) : Radius.zero,
             bottomEnd: isMyMessage ? Radius.zero : const Radius.circular(12),
           ),
           boxShadow: [
