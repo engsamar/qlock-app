@@ -53,5 +53,6 @@
   "starting_conversation": "بدء المحادثة...",
   "conversation_started": "بدأت المحادثة",
   "conversation_failed": "فشل بدء المحادثة",
-  "error_loading_contacts": "خطأ في تحميل جهات الاتصال"
+  "error_loading_contacts": "خطأ في تحميل جهات الاتصال",
+  "waiting_for_message": "جاري الانتظار للرسالة..."
 }

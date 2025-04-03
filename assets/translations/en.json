@@ -53,5 +53,6 @@
   "starting_conversation": "Starting conversation...",
   "conversation_started": "Conversation started",
   "conversation_failed": "Failed to start conversation",
-  "error_loading_contacts": "Error loading contacts"
+  "error_loading_contacts": "Error loading contacts",
+  "waiting_for_message": "Waiting for message..."
 }

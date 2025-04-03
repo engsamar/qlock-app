@@ -80,4 +80,5 @@ class AppStrings {
   static const conversationStarted = 'conversation_started';
   static const conversationFailed = 'conversation_failed';
   static const errorLoadingContacts = 'error_loading_contacts';
+  static const waitingForMessage = 'waiting_for_message';
 }

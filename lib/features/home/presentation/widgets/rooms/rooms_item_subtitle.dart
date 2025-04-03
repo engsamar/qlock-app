@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:q_lock/core/constants/app_strings.dart';
 
 import '../../../../../core/functions.dart';
 import '../../../../auth/presentation/logic/auth_cubit.dart';
@@ -42,10 +44,7 @@ class RoomsItemSubtitle extends StatelessWidget {
     );
 
     if (room.lastMessageModel?.type == MessageType.text) {
-      return Text(
-        decodedMessage.sender,
-        style: subtitleTextStyle,
-      );
+      return Text(decodedMessage.sender, style: subtitleTextStyle);
     }
 
     return Row(
@@ -61,19 +60,14 @@ class RoomsItemSubtitle extends StatelessWidget {
                 color: theme.colorScheme.primary,
               ),
               const SizedBox(width: 4),
+              Text(room.lastMessageModel?.type.name.toUpperCase() ?? ''),
             ],
           ),
-        // Text(
-        //   room.lastMessageModel?.message.receiver.isNotEmpty ?? false
-        //       ? room.lastMessageModel?.sender.id ==
-        //               context.read<AuthCubit>().currentUser!.id
-        //           ? room.lastMessageModel?.message.sender ?? ''
-        //           : room.lastMessageModel?.message.receiver ??
-        //               'waiting for message...'
-        //       : room.lastMessageModel?.type.name.toUpperCase() ??
-        //           'waiting for message...',
-        //   style: subtitleTextStyle,
-        // ),
+        if (room.lastMessageModel == null)
+          Text(
+            AppStrings.waitingForMessage.tr(),
+            style: subtitleTextStyle,
+          ),
       ],
     );
   }
