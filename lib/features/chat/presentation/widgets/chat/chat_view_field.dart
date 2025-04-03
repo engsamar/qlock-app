@@ -86,19 +86,3 @@ class _ChatViewFieldState extends State<ChatViewField> {
     );
   }
 }
-
-class _FieldIconButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  const _FieldIconButton({required this.icon, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      color: Theme.of(context).colorScheme.onSecondary,
-    );
-  }
-}
