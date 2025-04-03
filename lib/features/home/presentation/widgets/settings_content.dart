@@ -44,7 +44,19 @@ class SettingsContent extends StatelessWidget {
               child: ListTile(
                 leading: Icon(CustomIcons.language),
                 title: Text(AppStrings.language.tr()),
-                onTap: () {},
+                onTap: () {
+                  // Get current locale
+                  final currentLocale = context.locale;
+                  
+                  // Toggle between English and Arabic
+                  if (currentLocale.languageCode == 'en') {
+                    // Change to Arabic
+                    context.setLocale(const Locale('ar'));
+                  } else {
+                    // Change to English
+                    context.setLocale(const Locale('en'));
+                  }
+                },
               ),
             ),
             SizedBox(height: 18.h),

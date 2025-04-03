@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +21,7 @@ class ChatViewDateItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            _formatDate(date),
+            _formatDate(date, context),
             style: TextStyle(
               color: AppColors.darkBlue,
               fontSize: 12,
@@ -32,16 +33,16 @@ class ChatViewDateItem extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(DateTime date, BuildContext context) {
     final today = DateTime.now();
     final yesterday = today.subtract(const Duration(days: 1));
 
     if (DateUtils.isSameDay(date, today)) {
-      return AppStrings.today;
+      return AppStrings.today.tr();
     } else if (DateUtils.isSameDay(date, yesterday)) {
-      return AppStrings.yesterday;
+      return AppStrings.yesterday.tr();
     } else {
-      return DateFormat('dd MMM yyyy').format(date);
+      return DateFormat('dd MMM yyyy', context.locale.countryCode).format(date);
     }
   }
 }

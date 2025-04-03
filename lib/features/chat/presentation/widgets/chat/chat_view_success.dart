@@ -119,10 +119,7 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
     DateTime? currentDate;
 
     for (final message in messages) {
-      final messageDate =
-          DateTime.fromMillisecondsSinceEpoch(
-            message.createdAt.millisecondsSinceEpoch,
-          ).toLocal();
+      final messageDate = message.createdAt;
       final dateOnly = DateTime(
         messageDate.year,
         messageDate.month,
@@ -141,9 +138,7 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
 
     if (messages.isNotEmpty) {
       groupedMessages.add(
-        DateTime.fromMillisecondsSinceEpoch(
-          messages.last.createdAt.millisecondsSinceEpoch,
-        ).toLocal(),
+        messages.last.createdAt,
       );
     }
     return groupedMessages;
