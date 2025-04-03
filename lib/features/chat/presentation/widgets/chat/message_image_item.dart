@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +26,32 @@ class MessageImageItem extends StatelessWidget {
     final bool isMyMessage =
         message.sender.id == context.read<AuthCubit>().currentUser!.id;
 
+    // Get the actual message content which might be base64 encoded
+    final String messageContent = message.message.receiver;
+
+    // Check if it's a remote URL
     final isRemoteUrl =
         (Uri.tryParse(message.mediaUrl ?? '')?.hasAbsolutePath ?? false) &&
-            message.mediaUrl!.contains('http');
+        message.mediaUrl!.contains('http');
 
+    // Check if it's a local file
     final isLocalFile = File(message.mediaUrl ?? '').existsSync();
+
+    // Try to detect if the content is a base64 encoded image
+    bool isBase64Image = false;
+    Uint8List? imageBytes;
+
+    if (messageContent.isNotEmpty) {
+      try {
+        // Try to decode as base64
+        imageBytes = base64Decode(messageContent);
+        // If we get here without an exception, it's likely base64
+        isBase64Image = imageBytes.isNotEmpty;
+      } catch (e) {
+        // Not a valid base64 string
+        isBase64Image = false;
+      }
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,8 +62,8 @@ class MessageImageItem extends StatelessWidget {
             width: size,
             height: size,
             fit: BoxFit.cover,
-            errorWidget: (context, url, error) =>
-                _ImageError(AppStrings.imageNotFound),
+            errorWidget:
+                (context, url, error) => _ImageError(AppStrings.imageNotFound),
           )
         else if (isLocalFile)
           Image.file(
@@ -48,17 +71,25 @@ class MessageImageItem extends StatelessWidget {
             width: size,
             height: size,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                _ImageError(AppStrings.failedToLoadImage),
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    _ImageError(AppStrings.failedToLoadImage),
+          )
+        else if (isBase64Image && imageBytes != null)
+          Image.memory(
+            imageBytes,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+            errorBuilder:
+                (context, error, stackTrace) =>
+                    _ImageError(AppStrings.failedToLoadImage),
           )
         else
           _ImageError(AppStrings.failedToLoadImage),
-        if (message.message.receiver.isNotEmpty) ...[
+        if (message.message.receiver.isNotEmpty && !isBase64Image) ...[
           const SizedBox(height: 4),
-          MessageTextItem(
-            message: message.message,
-            isMyMessage: isMyMessage,
-          ),
+          MessageTextItem(message: message.message, isMyMessage: isMyMessage),
         ],
       ],
     );

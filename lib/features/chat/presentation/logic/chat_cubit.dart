@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +53,7 @@ class ChatCubit extends Cubit<ChatState> {
               );
               currentMessages.removeWhere((message) {
                 return newMessages.any((e) {
-                  return e.id == 121212121212;
+                  return message.id == 123456789 || e.id == message.id;
                 });
               });
               final mergedMessages = [...newMessages, ...currentMessages];
@@ -75,7 +76,7 @@ class ChatCubit extends Cubit<ChatState> {
     final encryptedMessageForOther = encryptWithRSA(message, otherPublicKey);
 
     final messageModel = MessageModel(
-      id: 121212121212,
+      id: 123456789,
       message: MessageContentModel(
         sender: encryptedMessageForMe,
         receiver: encryptedMessageForOther,
@@ -95,7 +96,11 @@ class ChatCubit extends Cubit<ChatState> {
       type: type,
     );
 
-    result.fold((failure) {}, (success) {});
+    result.fold((failure) {
+      log('*/*/*/ failure: ${failure.message}');
+    }, (success) {
+      log('*/*/*/ success:');
+    });
   }
 
   @override

@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/functions.dart';
@@ -26,6 +32,17 @@ class _ChatViewFieldState extends State<ChatViewField> {
     super.dispose();
   }
 
+  // Safe way to show snackbar that doesn't depend on BuildContext
+  void _showSnackBar(String message) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +51,10 @@ class _ChatViewFieldState extends State<ChatViewField> {
       color: AppColors.grey,
       child: Row(
         children: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+          IconButton(
+            onPressed: () => _showMediaOptions(context),
+            icon: const Icon(Icons.add),
+          ),
           Expanded(
             child: Container(
               height: 50,
@@ -64,10 +84,17 @@ class _ChatViewFieldState extends State<ChatViewField> {
     final trimmedText = _messageController.text.trim();
     if (trimmedText.isEmpty) return;
 
+    _sendMessage(message: trimmedText, type: MessageType.text);
+
+    // Clear the text field after sending
+    _messageController.clear();
+  }
+
+  void _sendMessage({required String message, required MessageType type}) {
     context.read<ChatCubit>().sendMessage(
       chatId: widget.chat.id,
-      message: trimmedText,
-      type: MessageType.text,
+      message: message,
+      type: type,
       sender: context.read<AuthCubit>().currentUser!,
       myPublicKey: decodePublicKeyFromString(
         context.read<AuthCubit>().currentUser?.publicKey ?? '',
@@ -76,15 +103,175 @@ class _ChatViewFieldState extends State<ChatViewField> {
         widget.chat.user.publicKey ?? '',
       ),
     );
-
-    // Clear the text field after sending
-    _messageController.clear();
   }
 
-  Future<void> _pickMedia(
-    BuildContext context, {
-    required bool isVideo,
-  }) async {}
+  void _showMediaOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text('Send Image'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage();
+                },
+              ),
+            ],
+          ),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    try {
+      final XFile? file = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 60,
+        maxWidth: 800,
+        maxHeight: 800,
+      );
+
+      if (file == null || !mounted) return;
+
+      // Process the image in a separate function to handle all the async work
+      await _processAndSendImage(file);
+    } catch (e) {
+      if (mounted) {
+        _showSnackBar('Error picking image: ${e.toString()}');
+      }
+    }
+  }
+
+  Future<void> _processAndSendImage(XFile file) async {
+    try {
+      // Get the file size to determine compression strategy
+      final fileSize = await File(file.path).length();
+
+      // First compression pass - standard for all images
+      final File imageFile = File(file.path);
+
+      // Adjust parameters based on original image size - be much more aggressive
+      int initialQuality = 20; // Lower quality
+      int initialWidth = 500; // Smaller dimensions
+      int initialHeight = 500;
+
+      // For very large images (4K+), use even more aggressive initial compression
+      if (fileSize > 4 * 1024 * 1024) {
+        // > 4MB
+        initialQuality = 15;
+        initialWidth = 400;
+        initialHeight = 400;
+      }
+
+      final compressedBytes = await FlutterImageCompress.compressWithFile(
+        imageFile.absolute.path,
+        minWidth: initialWidth,
+        minHeight: initialHeight,
+        quality: initialQuality,
+        format: CompressFormat.jpeg,
+      );
+
+      if (!mounted) return;
+
+      if (compressedBytes == null) {
+        _showSnackBar('Failed to compress image');
+        return;
+      }
+
+      Uint8List finalImageBytes = compressedBytes;
+
+      // Define a much smaller maximum size for base64 string
+      // For MySQL TEXT column which is typically 64KB, stay well under that
+      const int maxBase64Size =
+          20 * 1024; // 20KB for binary data (becomes ~27KB as base64)
+
+      print("Compressed image size: ${finalImageBytes.length} bytes");
+
+      // Progressive compression - keep reducing quality/size until it fits
+      int attemptCount = 0;
+      int currentQuality = initialQuality;
+      int currentWidth = initialWidth;
+      int currentHeight = initialHeight;
+
+      while (finalImageBytes.length > maxBase64Size && attemptCount < 5) {
+        // More attempts
+        attemptCount++;
+
+        // More aggressive reduction with each attempt
+        currentQuality = (currentQuality * 0.6).round(); // Reduce by 40%
+        currentWidth = (currentWidth * 0.6).round(); // Reduce by 40%
+        currentHeight = (currentHeight * 0.6).round(); // Reduce by 40%
+
+        // Ensure minimum values - lower minimum dimensions
+        currentQuality = currentQuality.clamp(
+          5,
+          100,
+        ); // Allow quality as low as 5%
+        currentWidth = currentWidth.clamp(
+          200,
+          1000,
+        ); // Allow width as low as 200px
+        currentHeight = currentHeight.clamp(
+          200,
+          1000,
+        ); // Allow height as low as 200px
+
+        print(
+          "Compression attempt $attemptCount: Quality=$currentQuality, Width=$currentWidth, Height=$currentHeight",
+        );
+
+        final recompressedBytes = await FlutterImageCompress.compressWithList(
+          finalImageBytes,
+          minWidth: currentWidth,
+          minHeight: currentHeight,
+          quality: currentQuality,
+          format: CompressFormat.jpeg,
+        );
+
+        finalImageBytes = recompressedBytes;
+        print(
+          "New size after attempt $attemptCount: ${finalImageBytes.length} bytes",
+        );
+      }
+
+      // Final size check - abort if still too large
+      if (finalImageBytes.length > maxBase64Size) {
+        if (mounted) {
+          _showSnackBar(
+            'Image is too large to send even after compression. Please select a smaller image.',
+          );
+        }
+        return;
+      }
+
+      // Final check - if the base64 string would be larger than ~60KB, reject it
+      final base64String = base64Encode(finalImageBytes);
+      if (base64String.length > 60 * 1024) {
+        if (mounted) {
+          _showSnackBar(
+            'Encoded image is too large to send. Please select a smaller image.',
+          );
+        }
+        return;
+      }
+
+      print("Final base64 string length: ${base64String.length}");
+
+      if (!mounted) return;
+
+      // Send the message
+      _sendMessage(message: base64String, type: MessageType.image);
+    } catch (e) {
+      print("Error in image processing: $e");
+      if (mounted) {
+        _showSnackBar('Error processing image: ${e.toString()}');
+      }
+    }
+  }
 
   OutlineInputBorder buildFieldBorder({required Color color}) {
     return OutlineInputBorder(

@@ -41,6 +41,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.0
   flutter_contacts: ^1.1.9+2
+  flutter_image_compress: ^2.4.0
   flutter_intl_phone_field: ^0.0.4
   flutter_screenutil: ^5.9.3
   freezed_annotation: ^3.0.0
