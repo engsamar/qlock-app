@@ -36,8 +36,7 @@ class ChatViewMessageItem extends StatelessWidget {
           borderRadius: BorderRadiusDirectional.only(
             topStart: const Radius.circular(12),
             topEnd: const Radius.circular(12),
-            bottomStart:
-                isMyMessage ? const Radius.circular(12) : Radius.zero,
+            bottomStart: isMyMessage ? const Radius.circular(12) : Radius.zero,
             bottomEnd: isMyMessage ? Radius.zero : const Radius.circular(12),
           ),
           boxShadow: [
@@ -64,10 +63,7 @@ class ChatViewMessageItem extends StatelessWidget {
                 Text(
                   formatIntTime(message.createdAt.millisecondsSinceEpoch),
                   style: TextStyle(
-                    color:
-                        isMyMessage
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.inversePrimary,
+                    color: AppColors.black.withValues(alpha: .25),
                     fontSize: 12,
                   ),
                 ),
@@ -77,7 +73,7 @@ class ChatViewMessageItem extends StatelessWidget {
                   size: 14.r,
                   color:
                       message.status == 'sent'
-                          ? AppColors.grey
+                          ? AppColors.black.withValues(alpha: .25)
                           : AppColors.blue,
                 ),
               ],
