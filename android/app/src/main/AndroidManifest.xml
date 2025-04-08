@@ -4,9 +4,9 @@
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
   <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
   <application
-        android:label="q_lock"
+        android:label="QLock"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true">
     <activity
             android:name=".MainActivity"
