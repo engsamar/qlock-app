@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/custom_icons.dart';
 import '../../../../core/di.dart';
@@ -154,9 +155,20 @@ class _ChatsContentState extends State<ChatsContent> {
 
     if (filteredRooms.isEmpty) {
       return Center(
-        child: Text(
-          _getEmptyStateMessage(),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.darkBlue),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(AppImages.noChats),
+            SizedBox(height: 30.h),
+            Text(
+              _getEmptyStateMessage(),
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
         ),
       );
     }
