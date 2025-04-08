@@ -88,12 +88,24 @@ class ChatCubit extends Cubit<ChatState> {
 
     emit(ChatLoadedState([messageModel, ..._getCurrentMessages()]));
 
-    await _chatRepository.sendMessage(
+    final result = await _chatRepository.sendMessage(
       chatId: chatId,
       myMessage: encryptedMessageForMe,
       otherMessage: encryptedMessageForOther,
       type: type,
     );
+
+    result.fold((failure) {
+      final currentMessages = _getCurrentMessages();
+      currentMessages.removeWhere((message) {
+        return message.id == 123456789;
+      });
+      emit(
+        ChatLoadedState([
+          ...currentMessages,
+        ]),
+      );
+    }, (newMessage) {});
   }
 
   @override
