@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:io' as io;
 
+import 'package:device_info_plus/device_info_plus.dart';
 import "package:pointycastle/export.dart";
 import 'package:pointycastle/src/platform_check/platform_check.dart';
 
@@ -217,8 +219,19 @@ String hybridDecrypt(String encryptedText, RSAPrivateKey privateKey) {
   return utf8.decode(unpaddedData);
 }
 
-// For End-to-End encryption in a chat app:
-// 1. Each user generates their own key pair (public & private)
-// 2. Each user stores their private key securely and shares their public key
-// 3. To send a message, encrypt it with the recipient's public key
-// 4. The recipient decrypts it with their private key
+Future<String?> getDeviceId() async {
+  final deviceInfo = DeviceInfoPlugin();
+
+  if (io.Platform.isAndroid) {
+    final androidInfo = await deviceInfo.androidInfo;
+    // On Android this is a 64‑bit hex string that survives app reinstalls
+    return androidInfo.id;
+  } else if (io.Platform.isIOS) {
+    final iosInfo = await deviceInfo.iosInfo;
+    // On iOS this is the identifierForVendor
+    return iosInfo.identifierForVendor;
+  } else {
+    // Web, desktop, etc. don’t have a stable device ID via this plugin
+    return null;
+  }
+}

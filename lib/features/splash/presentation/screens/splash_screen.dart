@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,9 @@ import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_keys.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/widgets/gradient_background.dart';
+import '../../../../main.dart';
 import '../../../auth/presentation/logic/auth_cubit.dart';
+import '../../../notification/repos/notification_repository.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -47,10 +50,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 '') {
           Navigator.pushReplacementNamed(context, AppRoutes.completeProfile);
         } else {
+          getIt<NotificationRepository>().initialize(
+            deviceId: deviceId,
+            lang: context.deviceLocale.languageCode,
+          );
           Navigator.pushReplacementNamed(context, AppRoutes.home);
         }
       } else {
-        if (getIt<SharedPreferences>().getBool(AppKeys.onboardingSeen) ==
+        if ((getIt<SharedPreferences>().getBool(AppKeys.onboardingSeen) ?? false) ==
             false) {
           Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
         } else {

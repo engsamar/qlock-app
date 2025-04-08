@@ -5,6 +5,7 @@ abstract class ApiEndpoints {
   static const String profile = 'profile';
   static const String conversations = 'conversations';
   static const String messages = 'messages';
+  static const String fcmToken = 'fcm/token';
   static String conversationById({required int id}) => 'conversations/$id';
   static String messagesById({required int id}) => 'messages/$id';
   static String markMessageAsReadById({required int id}) => 'messages/$id/read';

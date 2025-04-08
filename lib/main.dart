@@ -7,15 +7,18 @@ import 'package:q_lock/core/constants/app_strings.dart';
 import 'package:q_lock/core/di.dart';
 import 'package:q_lock/features/auth/presentation/logic/auth_cubit.dart';
 
+import 'core/functions.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
+late String deviceId;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  deviceId = await getDeviceId() ?? '';
   await setupDI();
 
   runApp(

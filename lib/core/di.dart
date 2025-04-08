@@ -1,4 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:q_lock/features/auth/data/repos/auth_repository.dart';
 import 'package:q_lock/features/chat/data/repos/chat_repository.dart';
@@ -8,6 +10,9 @@ import 'package:q_lock/features/profile/data/repos/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/home/data/repository/rooms_repository.dart';
+import '../features/notification/data_sources/firebase_notification_data_source.dart';
+import '../features/notification/data_sources/local_notification_data_source.dart';
+import '../features/notification/repos/notification_repository.dart';
 import 'network/dio_client.dart';
 import 'network/dio_config.dart';
 import 'network/interceptors/auth_interceptor.dart';
@@ -39,6 +44,31 @@ Future<void> setupDI() async {
     () => FirebaseDatabase.instance,
   );
 
+
+  getIt.registerLazySingleton<FirebaseMessaging>(
+    () => FirebaseMessaging.instance,
+  );
+
+
+
+  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(
+    () => FlutterLocalNotificationsPlugin(),
+  );
+
+  // Data sources
+  getIt.registerLazySingleton<FirebaseNotificationDataSource>(
+    () => FirebaseNotificationDataSource(
+      messaging: getIt(),
+      dioClient: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<LocalNotificationDataSource>(
+    () => LocalNotificationDataSource(
+      plugin: getIt(),
+    ),
+  );
+
   // Repositories
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(dioClient: getIt()),
@@ -63,8 +93,17 @@ Future<void> setupDI() async {
     ),
   );
 
+  getIt.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepository(
+      firebaseDataSource: getIt(),
+      localDataSource: getIt(),
+    ),
+  );
+
   // Register cubits/blocs
   getIt.registerFactory<ContactsCubit>(
     () => ContactsCubit(contactsRepository: getIt()),
   );
+
+  
 }

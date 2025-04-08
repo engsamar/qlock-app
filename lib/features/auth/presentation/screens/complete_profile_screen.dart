@@ -15,6 +15,8 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/gradient_background.dart';
+import '../../../../main.dart';
+import '../../../notification/repos/notification_repository.dart';
 import '../logic/auth_cubit.dart';
 import '../logic/auth_state.dart';
 
@@ -86,6 +88,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   SnackBar(
                     content: Text(AppStrings.profileCompletedSuccess.tr()),
                   ),
+                );
+
+                getIt<NotificationRepository>().initialize(
+                  deviceId: deviceId,
+                  lang: context.deviceLocale.languageCode,
                 );
                 Navigator.pushNamedAndRemoveUntil(
                   context,
