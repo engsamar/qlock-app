@@ -69,5 +69,7 @@
   "image_not_found": "Image not found",
   "failed_to_load_image": "Failed to load image",
   "today": "Today",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "no_title": "No Title",
+  "no_body": "No Body"
 }

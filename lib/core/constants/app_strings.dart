@@ -94,4 +94,8 @@ class AppStrings {
   static const conversationFailed = 'conversation_failed';
   static const errorLoadingContacts = 'error_loading_contacts';
   static const waitingForMessage = 'waiting_for_message';
+
+  // Notification
+  static const noTitle = 'no_title';
+  static const noBody = 'no_body';
 }

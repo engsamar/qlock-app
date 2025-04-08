@@ -69,5 +69,7 @@
   "image_not_found": "الصورة غير موجودة",
   "failed_to_load_image": "فشل في تحميل الصورة",
   "today": "اليوم",
-  "yesterday": "أمس"
+  "yesterday": "أمس",
+  "no_title": "لا يوجد عنوان",
+  "no_body": "لا يوجد نص"
 }
