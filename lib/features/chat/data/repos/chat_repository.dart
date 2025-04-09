@@ -73,6 +73,16 @@ class ChatRepository {
     }
   }
 
+  Future<Either<Failure, void>> markMessageAsRead({
+    required int chatId,
+  }) async {
+    return _dioClient.put(
+      path: ApiEndpoints.markMessageAsReadById(id: chatId),
+      fromJson: (_) => null,
+      body: {},
+    );
+  }
+
   Future<Either<Failure, void>> sendMessage({
     required int chatId,
     required String myMessage,

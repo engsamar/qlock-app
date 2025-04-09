@@ -5,6 +5,7 @@ import '../../../../../core/functions.dart';
 import '../../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../../home/data/models/room_model.dart';
 import '../../../data/models/message_model.dart';
+import '../../logic/chat_cubit.dart';
 import 'chat_view_date_item.dart';
 import 'chat_view_message_item.dart';
 
@@ -87,25 +88,27 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
 
               final decodedMessageForOther = decryptWithRSA(
                 isMyMessage ? item.message.receiver : item.message.sender,
-                decodePrivateKeyFromString(
-                  widget.room.user.privateKey ?? '',
-                ),
+                decodePrivateKeyFromString(widget.room.user.privateKey ?? ''),
               );
 
               final decodedMessage = item.copyWith(
                 message: MessageContentModel(
-                  receiver: isMyMessage
-                      ? decodedMessageForOther
-                      : decodedMessageForMe,
-                  sender: isMyMessage
-                      ? decodedMessageForMe
-                      : decodedMessageForOther,
+                  receiver:
+                      isMyMessage
+                          ? decodedMessageForOther
+                          : decodedMessageForMe,
+                  sender:
+                      isMyMessage
+                          ? decodedMessageForMe
+                          : decodedMessageForOther,
                 ),
               );
-              // TODO: call api to mark message as read if it's not me
-              return ChatViewMessageItem(
-                message: decodedMessage,
-              );
+              if (!isMyMessage && index == groupedMessages.length - 1) {
+                context.read<ChatCubit>().markMessageAsRead(
+                  chatId: widget.room.id,
+                );
+              }
+              return ChatViewMessageItem(message: decodedMessage);
             }
             return const SizedBox();
           },
@@ -137,9 +140,7 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
     }
 
     if (messages.isNotEmpty) {
-      groupedMessages.add(
-        messages.last.createdAt,
-      );
+      groupedMessages.add(messages.last.createdAt);
     }
     return groupedMessages;
   }
