@@ -79,5 +79,10 @@
   "share_contact": "Share Contact",
   "clear_chat": "Clear Chat",
   "block": "Block",
-  "report": "Report"
+  "report": "Report",
+  "camera": "Camera",
+  "photo_and_video_library": "Photo & Video Library",
+  "document": "Document",
+  "location": "Location",
+  "contact": "Contact"
 }

@@ -108,4 +108,11 @@ class AppStrings {
   static const clearChat = 'clear_chat';
   static const block = 'block';
   static const report = 'report';
+
+  // Chat View Field
+  static const camera = 'camera';
+  static const photoAndVideoLibrary = 'photo_and_video_library';
+  static const document = 'document';
+  static const location = 'location';
+  static const contact = 'contact';
 }

@@ -79,5 +79,10 @@
   "share_contact": "مشاركة جهة الاتصال",
   "clear_chat": "مسح المحادثة",
   "block": "حظر",
-  "report": "تقرير"
+  "report": "تقرير",
+  "camera": "الكاميرا",
+  "photo_and_video_library": "مكتبة الصور والفيديوهات",
+  "document": "الملفات",
+  "location": "الموقع",
+  "contact": "الاتصال"
 }
