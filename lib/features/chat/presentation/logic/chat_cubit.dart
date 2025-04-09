@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,6 +111,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   void markMessageAsRead({required int chatId}) {
     _chatRepository.markMessageAsRead(chatId: chatId);
+  }
+
+  Future<void> deleteMessage({required int messageId}) async {
+    await _chatRepository.deleteMessage(messageId: messageId).then((result) {
+      result.fold((failure) {
+        log(failure.message);
+      }, (success) {
+        log('message deleted');
+      });
+    });
   }
 
   @override

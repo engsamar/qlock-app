@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/functions.dart';
 import '../../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../../home/data/models/room_model.dart';
 import '../../../data/models/message_model.dart';
 import '../../logic/chat_cubit.dart';
+import '../../logic/chat_state.dart';
 import 'chat_view_date_item.dart';
 import 'chat_view_message_item.dart';
 
@@ -108,12 +111,59 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
                   chatId: widget.room.id,
                 );
               }
-              return ChatViewMessageItem(message: decodedMessage);
+              return GestureDetector(
+                onLongPress: () {
+                  _showDeleteDialog(context, decodedMessage);
+                },
+                onTap: () {
+                  print('*/*/*/ ${decodedMessage.id}');
+                },
+                child: ChatViewMessageItem(message: decodedMessage),
+              );
             }
             return const SizedBox();
           },
         ),
       ],
+    );
+  }
+
+  void _showDeleteDialog(BuildContext ctx, MessageModel message) {
+    showDialog(
+      context: ctx,
+      builder:
+          (context) => BlocProvider.value(
+            value: ctx.read<ChatCubit>(),
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                return AlertDialog(
+                  title: Text(AppStrings.deleteMessage.tr()),
+                  content: Text(AppStrings.deleteMessageContent.tr()),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        context
+                            .read<ChatCubit>()
+                            .deleteMessage(messageId: message.id)
+                            .then((value) {
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                              }
+                            });
+                      },
+                      child: Text(AppStrings.delete.tr()),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(AppStrings.cancel.tr()),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
     );
   }
 
