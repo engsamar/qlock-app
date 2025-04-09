@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_strings.dart';
+import '../../../../../core/constants/custom_icons.dart';
 import '../../../../../core/functions.dart';
 import '../../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../../home/data/models/room_model.dart';
@@ -54,8 +55,7 @@ class _ChatViewFieldState extends State<ChatViewField> {
       child: Row(
         children: [
           IconButton(
-            // onPressed: () {},
-            onPressed: ()  => _pickImage(),
+            onPressed: () => _showMediaOptions(context),
             icon: const Icon(Icons.add),
           ),
           Expanded(
@@ -111,28 +111,117 @@ class _ChatViewFieldState extends State<ChatViewField> {
   void _showMediaOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder:
-          (context) => Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo),
-                title: Text(AppStrings.sendImage.tr()),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage();
-                },
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
               ),
-            ],
-          ),
+              child: Column(
+                children: [
+                  _buildOption(
+                    context,
+                    Icons.camera_alt_rounded,
+                    AppStrings.camera,
+                    AppColors.primary,
+                  ),
+                  _buildOption(
+                    context,
+                    CustomIcons.media,
+                    AppStrings.photoAndVideoLibrary,
+                    AppColors.primary,
+                  ),
+                  _buildOption(
+                    context,
+                    CustomIcons.document,
+                    AppStrings.document,
+                    AppColors.primary,
+                  ),
+                  _buildOption(
+                    context,
+                    CustomIcons.location,
+                    AppStrings.location,
+                    AppColors.primary,
+                  ),
+                  _buildOption(
+                    context,
+                    CustomIcons.profile,
+                    AppStrings.contact,
+                    AppColors.primary,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 8),
+            // Cancel button
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    AppStrings.cancel.tr(),
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                onTap: () => Navigator.pop(context),
+              ),
+            ),
+            SizedBox(height: 8),
+          ],
+        );
+      },
     );
   }
 
-  Future<void> _pickImage() async {
+  Widget _buildOption(
+    BuildContext context,
+    IconData icon,
+    String title,
+    Color iconColor,
+  ) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title.tr()),
+      onTap: () {
+        Navigator.pop(context);
+        switch (title) {
+          case AppStrings.camera:
+            _pickImage(ImageSource.camera);
+            break;
+          case AppStrings.photoAndVideoLibrary:
+            _pickImage(ImageSource.gallery);
+            break;
+          case AppStrings.document:
+            break;
+          case AppStrings.location:
+            break;
+          case AppStrings.contact:
+            break;
+          default:
+            break;
+        }
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
 
     try {
       final XFile? file = await picker.pickImage(
-        source: ImageSource.gallery,
+        source: source,
         imageQuality: 60,
         maxWidth: 800,
         maxHeight: 800,
@@ -192,7 +281,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
       const int maxBase64Size =
           20 * 1024; // 20KB for binary data (becomes ~27KB as base64)
 
-
       // Progressive compression - keep reducing quality/size until it fits
       int attemptCount = 0;
       int currentQuality = initialQuality;
@@ -222,7 +310,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
           1000,
         ); // Allow height as low as 200px
 
-
         final recompressedBytes = await FlutterImageCompress.compressWithList(
           finalImageBytes,
           minWidth: currentWidth,
@@ -250,7 +337,6 @@ class _ChatViewFieldState extends State<ChatViewField> {
         }
         return;
       }
-
 
       if (!mounted) return;
 
