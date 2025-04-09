@@ -71,5 +71,13 @@
   "today": "Today",
   "yesterday": "Yesterday",
   "no_title": "No Title",
-  "no_body": "No Body"
+  "no_body": "No Body",
+  "contact_info": "Contact Info",
+  "media": "Media, links and documents",
+  "starred_messages": "Starred Messages",
+  "notifications_and_sounds": "Notifications and Sounds",
+  "share_contact": "Share Contact",
+  "clear_chat": "Clear Chat",
+  "block": "Block",
+  "report": "Report"
 }

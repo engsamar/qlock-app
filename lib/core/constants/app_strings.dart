@@ -98,4 +98,14 @@ class AppStrings {
   // Notification
   static const noTitle = 'no_title';
   static const noBody = 'no_body';
+
+  // Chat User Profile
+  static const contactInfo = 'contact_info';
+  static const media = 'media';
+  static const starredMessages = 'starred_messages';
+  static const notificationsAndSounds = 'notifications_and_sounds';
+  static const shareContact = 'share_contact';
+  static const clearChat = 'clear_chat';
+  static const block = 'block';
+  static const report = 'report';
 }

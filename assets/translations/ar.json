@@ -71,5 +71,13 @@
   "today": "اليوم",
   "yesterday": "أمس",
   "no_title": "لا يوجد عنوان",
-  "no_body": "لا يوجد نص"
+  "no_body": "لا يوجد نص",
+  "contact_info": "معلومات الاتصال",
+  "media": "الوسائط والروابط والملفات",
+  "starred_messages": "الرسائل المفضلة",
+  "notifications_and_sounds": "الإشعارات والصوت",
+  "share_contact": "مشاركة جهة الاتصال",
+  "clear_chat": "مسح المحادثة",
+  "block": "حظر",
+  "report": "تقرير"
 }
