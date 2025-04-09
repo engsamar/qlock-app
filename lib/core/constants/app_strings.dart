@@ -115,4 +115,9 @@ class AppStrings {
   static const document = 'document';
   static const location = 'location';
   static const contact = 'contact';
+
+  // Delete Message
+  static const deleteMessage = 'delete_message';
+  static const deleteMessageContent = 'delete_message_content';
+  static const delete = 'delete';
 }

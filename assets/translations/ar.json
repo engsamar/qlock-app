@@ -84,5 +84,8 @@
   "photo_and_video_library": "مكتبة الصور والفيديوهات",
   "document": "الملفات",
   "location": "الموقع",
-  "contact": "الاتصال"
+  "contact": "الاتصال",
+  "delete_message": "حذف الرسالة",
+  "delete_message_content": "هل أنت متأكد أنك تريد حذف هذه الرسالة؟",
+  "delete": "حذف"
 }
