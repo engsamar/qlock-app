@@ -9,6 +9,7 @@ import '../../features/auth/presentation/screens/otp_screen.dart';
 import '../../features/chat/presentation/views/chat_view.dart';
 import '../../features/home/data/models/room_model.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../../features/profile/presentation/screens/chat_user_profile.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../constants/app_strings.dart';
 
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String contacts = '/contacts';
   static const String chat = '/chat';
+  static const String chatUserProfile = '/chat-user-profile';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -48,6 +50,10 @@ class AppRoutes {
       case chat:
         final args = settings.arguments as RoomModel;
         return MaterialPageRoute(builder: (_) => ChatView(chat: args));
+      case chatUserProfile:
+        final args = settings.arguments as RoomModel;
+        return MaterialPageRoute(
+            builder: (_) => ChatUserProfile(chat: args));
       default:
         return MaterialPageRoute(
           builder:
