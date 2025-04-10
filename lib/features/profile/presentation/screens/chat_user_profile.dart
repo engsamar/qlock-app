@@ -55,6 +55,7 @@ class ChatUserProfile extends StatelessWidget {
                     color: AppColors.myMessageColor,
                   ),
                 ),
+                SizedBox(height: 24.h),
                 Card(
                   child: Column(
                     children: [
@@ -67,14 +68,10 @@ class ChatUserProfile extends StatelessWidget {
                         trailing: Icon(
                           Icons.arrow_forward_ios,
                           size: 18,
-                          color: AppColors.darkGrey,
+                          color: AppColors.grey,
                         ),
                       ),
-                      Divider(
-                        color: AppColors.darkGrey,
-                        indent: 36.w,
-                        height: 0,
-                      ),
+                      Divider(color: AppColors.grey, indent: 36.w, height: 0),
                       ListTile(
                         leading: Icon(CustomIcons.star),
                         title: Text(
@@ -84,12 +81,13 @@ class ChatUserProfile extends StatelessWidget {
                         trailing: Icon(
                           Icons.arrow_forward_ios,
                           size: 18,
-                          color: AppColors.darkGrey,
+                          color: AppColors.grey,
                         ),
                       ),
                     ],
                   ),
                 ),
+                SizedBox(height: 16.h),
                 Card(
                   child: ListTile(
                     leading: Icon(CustomIcons.notification),
@@ -100,10 +98,11 @@ class ChatUserProfile extends StatelessWidget {
                     trailing: Icon(
                       Icons.arrow_forward_ios,
                       size: 18,
-                      color: AppColors.darkGrey,
+                      color: AppColors.grey,
                     ),
                   ),
                 ),
+                SizedBox(height: 16.h),
                 Card(
                   child: Column(
                     children: [
@@ -116,11 +115,7 @@ class ChatUserProfile extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Divider(
-                        color: AppColors.darkGrey,
-                        indent: 36.w,
-                        height: 0,
-                      ),
+                      Divider(color: AppColors.grey, indent: 36.w, height: 0),
                       ListTile(
                         title: Text(
                           AppStrings.clearChat.tr(),
@@ -133,6 +128,7 @@ class ChatUserProfile extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: 16.h),
                 Card(
                   child: Column(
                     children: [
@@ -145,11 +141,7 @@ class ChatUserProfile extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Divider(
-                        color: AppColors.darkGrey,
-                        indent: 36.w,
-                        height: 0,
-                      ),
+                      Divider(color: AppColors.grey, indent: 36.w, height: 0),
                       ListTile(
                         title: Text(
                           '${AppStrings.report.tr()} ${chat.nameOnContact}',
