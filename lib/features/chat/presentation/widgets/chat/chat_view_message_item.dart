@@ -67,15 +67,21 @@ class ChatViewMessageItem extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                SizedBox(width: 4.w),
-                Icon(
-                  Icons.check_rounded,
-                  size: 14.r,
-                  color:
-                      message.status == 'sent'
-                          ? AppColors.black.withValues(alpha: .25)
-                          : AppColors.blue,
-                ),
+                if (isMyMessage)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(width: 4.w),
+                      Icon(
+                        Icons.check_rounded,
+                        size: 14.r,
+                        color:
+                            message.status == 'sent'
+                                ? AppColors.black.withValues(alpha: .25)
+                                : AppColors.blue,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ],
