@@ -86,7 +86,7 @@ class ChatRepository {
   Future<Either<Failure, void>> deleteMessage({
     required int messageId,
   }) async {
-    return _dioClient.delete(
+    return _dioClient.delete<List<dynamic>, dynamic>(
       path: ApiEndpoints.messagesById(id: messageId),
       fromJson: (_) => null,
       body: {},
