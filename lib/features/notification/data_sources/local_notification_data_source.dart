@@ -8,7 +8,7 @@ class LocalNotificationDataSource {
 
   Future<void> initialize() async {
     const AndroidInitializationSettings androidInitSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const InitializationSettings initSettings =
         InitializationSettings(android: androidInitSettings);
 
