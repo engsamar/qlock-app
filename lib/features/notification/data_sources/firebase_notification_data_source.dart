@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,15 +12,15 @@ class FirebaseNotificationDataSource {
   FirebaseNotificationDataSource({
     required FirebaseMessaging messaging,
     required DioClient dioClient,
-  })  : _messaging = messaging,
-        _dioClient = dioClient;
+  }) : _messaging = messaging,
+       _dioClient = dioClient;
 
   Future<void> requestPermission() async {
     await _messaging.requestPermission();
   }
 
   Future<void> saveToken(String token, String deviceId, String lang) async {
-    final response = await _dioClient.put(
+    final response = await _dioClient.put<List<dynamic>, dynamic>(
       path: ApiEndpoints.fcmToken,
       body: {
         'fcm_token': token,
@@ -32,14 +31,7 @@ class FirebaseNotificationDataSource {
       fromJson: (_) => null,
     );
 
-    response.fold(
-      (failure) {
-        log('**//** ${failure.message} **//**');
-      },
-      (resource) {
-        log('**//** ${resource.data} **//**');
-      },
-    );
+    response.fold((failure) {}, (resource) {});
   }
 
   Stream<String?> onTokenRefresh() {
