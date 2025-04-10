@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as el;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -170,27 +170,30 @@ class _OTPScreenState extends State<OTPScreen> {
                               ),
                             ),
                             const SizedBox(height: 32),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: List.generate(
-                                4,
-                                (index) => SizedBox(
-                                  width: 78.w,
-                                  height: 89.h,
-                                  child: TextFormField(
-                                    controller: _controllers[index],
-                                    focusNode: _focusNodes[index],
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.center,
-                                    maxLength: 1,
-                                    style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w900,
-                                      color: AppColors.black,
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                  4,
+                                  (index) => SizedBox(
+                                    width: 78.w,
+                                    height: 89.h,
+                                    child: TextFormField(
+                                      controller: _controllers[index],
+                                      focusNode: _focusNodes[index],
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.center,
+                                      maxLength: 1,
+                                      style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.w900,
+                                        color: AppColors.black,
+                                      ),
+                                      onChanged:
+                                          (value) =>
+                                              _onOTPDigitChanged(value, index),
                                     ),
-                                    onChanged:
-                                        (value) =>
-                                            _onOTPDigitChanged(value, index),
                                   ),
                                 ),
                               ),
