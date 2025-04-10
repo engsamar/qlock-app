@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,11 +100,7 @@ class ChatCubit extends Cubit<ChatState> {
       currentMessages.removeWhere((message) {
         return message.id == 123456789;
       });
-      emit(
-        ChatLoadedState([
-          ...currentMessages,
-        ]),
-      );
+      emit(ChatLoadedState([...currentMessages]));
     }, (newMessage) {});
   }
 
@@ -115,11 +110,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> deleteMessage({required int messageId}) async {
     await _chatRepository.deleteMessage(messageId: messageId).then((result) {
-      result.fold((failure) {
-        log(failure.message);
-      }, (success) {
-        log('message deleted');
-      });
+      result.fold((failure) {}, (success) {});
     });
   }
 
