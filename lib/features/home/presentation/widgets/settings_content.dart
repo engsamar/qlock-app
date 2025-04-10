@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/custom_icons.dart';
+import '../../../../core/di.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../auth/presentation/logic/auth_cubit.dart';
 import '../../../auth/presentation/logic/auth_state.dart';
+import '../../../notification/repos/notification_repository.dart';
 
 class SettingsContent extends StatelessWidget {
   const SettingsContent({super.key});
@@ -18,6 +20,7 @@ class SettingsContent extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is UnauthenticatedState) {
+          getIt<NotificationRepository>().dispose();
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.login,
