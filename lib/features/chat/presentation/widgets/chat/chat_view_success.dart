@@ -106,7 +106,7 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
                           : decodedMessageForOther,
                 ),
               );
-              if (!isMyMessage && index == groupedMessages.length - 1) {
+              if (!isMyMessage && index == 0 && decodedMessage.status != 'read') {
                 context.read<ChatCubit>().markMessageAsRead(
                   chatId: widget.room.id,
                 );
@@ -114,9 +114,6 @@ class _ChatViewSuccessState extends State<ChatViewSuccess> {
               return GestureDetector(
                 onLongPress: () {
                   _showDeleteDialog(context, decodedMessage);
-                },
-                onTap: () {
-                  print('*/*/*/ ${decodedMessage.id}');
                 },
                 child: ChatViewMessageItem(message: decodedMessage),
               );
