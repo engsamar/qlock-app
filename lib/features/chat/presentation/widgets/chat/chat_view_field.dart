@@ -222,14 +222,14 @@ class _ChatViewFieldState extends State<ChatViewField> {
     try {
       final XFile? file = await picker.pickImage(
         source: source,
-        imageQuality: 60,
+        imageQuality: 60, // Default quality from ImagePicker
         maxWidth: 800,
         maxHeight: 800,
       );
 
       if (file == null || !mounted) return;
 
-      // Process the image in a separate function to handle all the async work
+      // Process the image
       await _processAndSendImage(file);
     } catch (e) {
       if (mounted) {
@@ -240,30 +240,16 @@ class _ChatViewFieldState extends State<ChatViewField> {
 
   Future<void> _processAndSendImage(XFile file) async {
     try {
-      // Get the file size to determine compression strategy
-      final fileSize = await File(file.path).length();
+      // Maximum size for base64 encoded image (much smaller to ensure DB compatibility)
+      // Roughly 20KB binary becomes ~27KB base64, should fit in most DB text columns
+      const int maxBase64Size = 20 * 1024;
 
-      // First compression pass - standard for all images
-      final File imageFile = File(file.path);
-
-      // Adjust parameters based on original image size - be much more aggressive
-      int initialQuality = 20; // Lower quality
-      int initialWidth = 500; // Smaller dimensions
-      int initialHeight = 500;
-
-      // For very large images (4K+), use even more aggressive initial compression
-      if (fileSize > 4 * 1024 * 1024) {
-        // > 4MB
-        initialQuality = 15;
-        initialWidth = 400;
-        initialHeight = 400;
-      }
-
-      final compressedBytes = await FlutterImageCompress.compressWithFile(
-        imageFile.absolute.path,
-        minWidth: initialWidth,
-        minHeight: initialHeight,
-        quality: initialQuality,
+      // Initial compression with moderate settings
+      Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
+        File(file.path).absolute.path,
+        minWidth: 500,
+        minHeight: 500,
+        quality: 40,
         format: CompressFormat.jpeg,
       );
 
@@ -274,71 +260,38 @@ class _ChatViewFieldState extends State<ChatViewField> {
         return;
       }
 
-      Uint8List finalImageBytes = compressedBytes;
-
-      // Define a much smaller maximum size for base64 string
-      // For MySQL TEXT column which is typically 64KB, stay well under that
-      const int maxBase64Size =
-          20 * 1024; // 20KB for binary data (becomes ~27KB as base64)
-
-      // Progressive compression - keep reducing quality/size until it fits
-      int attemptCount = 0;
-      int currentQuality = initialQuality;
-      int currentWidth = initialWidth;
-      int currentHeight = initialHeight;
-
-      while (finalImageBytes.length > maxBase64Size && attemptCount < 5) {
-        // More attempts
-        attemptCount++;
-
-        // More aggressive reduction with each attempt
-        currentQuality = (currentQuality * 0.6).round(); // Reduce by 40%
-        currentWidth = (currentWidth * 0.6).round(); // Reduce by 40%
-        currentHeight = (currentHeight * 0.6).round(); // Reduce by 40%
-
-        // Ensure minimum values - lower minimum dimensions
-        currentQuality = currentQuality.clamp(
-          5,
-          100,
-        ); // Allow quality as low as 5%
-        currentWidth = currentWidth.clamp(
-          200,
-          1000,
-        ); // Allow width as low as 200px
-        currentHeight = currentHeight.clamp(
-          200,
-          1000,
-        ); // Allow height as low as 200px
-
-        final recompressedBytes = await FlutterImageCompress.compressWithList(
-          finalImageBytes,
-          minWidth: currentWidth,
-          minHeight: currentHeight,
-          quality: currentQuality,
+      // If still too large, try more aggressive compression
+      if (compressedBytes.length > maxBase64Size) {
+        compressedBytes = await FlutterImageCompress.compressWithList(
+          compressedBytes,
+          minWidth: 400,
+          minHeight: 400,
+          quality: 25,
           format: CompressFormat.jpeg,
         );
-
-        finalImageBytes = recompressedBytes;
       }
 
-      // Final size check - abort if still too large
-      if (finalImageBytes.length > maxBase64Size) {
-        if (mounted) {
-          _showSnackBar(AppStrings.imageTooLarge.tr());
-        }
+      // If still too large, try even more aggressive compression
+      if (compressedBytes.length > maxBase64Size) {
+        compressedBytes = await FlutterImageCompress.compressWithList(
+          compressedBytes,
+          minWidth: 300,
+          minHeight: 300,
+          quality: 15,
+          format: CompressFormat.jpeg,
+        );
+      }
+
+      // Final check - if still too large, inform the user
+      if (compressedBytes.length > maxBase64Size) {
+        _showSnackBar(
+          '${AppStrings.imageTooLarge.tr()} Please choose a smaller image or take a lower resolution photo.',
+        );
         return;
       }
 
-      // Final check - if the base64 string would be larger than ~60KB, reject it
-      final base64String = base64Encode(finalImageBytes);
-      if (base64String.length > 60 * 1024) {
-        if (mounted) {
-          _showSnackBar(AppStrings.encodedImageTooLarge.tr());
-        }
-        return;
-      }
-
-      if (!mounted) return;
+      // Convert compressed image to base64
+      final base64String = base64Encode(compressedBytes);
 
       // Send the message
       _sendMessage(message: base64String, type: MessageType.image);
