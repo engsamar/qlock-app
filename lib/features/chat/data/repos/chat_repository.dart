@@ -76,7 +76,7 @@ class ChatRepository {
   Future<Either<Failure, void>> markMessageAsRead({
     required int chatId,
   }) async {
-    return _dioClient.put(
+    return _dioClient.put<List<dynamic>, dynamic>(
       path: ApiEndpoints.markMessageAsReadById(id: chatId),
       fromJson: (_) => null,
       body: {},
