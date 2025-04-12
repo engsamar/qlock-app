@@ -105,7 +105,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void markMessageAsRead({required int chatId}) {
-    _chatRepository.markMessageAsRead(chatId: chatId);
+    _chatRepository.markMessageAsRead(chatId: chatId).then((result) {
+      result.fold((failure) {}, (success) {});
+    });
   }
 
   Future<void> deleteMessage({required int messageId}) async {
