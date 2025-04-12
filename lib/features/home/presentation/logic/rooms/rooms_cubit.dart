@@ -15,8 +15,8 @@ class RoomsCubit extends Cubit<RoomsState> {
     : _roomsRepository = roomsRepository,
       super(const RoomsInitialState());
 
-
   StreamSubscription<Either<Failure, List<RoomModel>>>? _roomsSubscription;
+  FilterType _currentFilter = FilterType.all;
 
   List<RoomModel> _getCurrentRooms() {
     return switch (state) {
@@ -28,7 +28,7 @@ class RoomsCubit extends Cubit<RoomsState> {
   }
 
   void fetchRooms({required int currentUserId}) {
-    emit(RoomsLoadingState());
+    emit(RoomsLoadingState(filterType: _currentFilter));
     _roomsSubscription?.cancel();
 
     _roomsSubscription = _roomsRepository
@@ -39,6 +39,7 @@ class RoomsCubit extends Cubit<RoomsState> {
               emit(
                 RoomsErrorState(
                   message: failure.message,
+                  filterType: _currentFilter,
                 ),
               );
             },
@@ -50,10 +51,67 @@ class RoomsCubit extends Cubit<RoomsState> {
                 });
               });
               final mergedRooms = [...newRooms, ...currentRooms];
-              emit(RoomsLoadedState(rooms: mergedRooms));
+              final filteredRooms = _filterRooms(mergedRooms);
+              emit(
+                RoomsLoadedState(
+                  rooms: mergedRooms,
+                  filterType: _currentFilter,
+                  filteredRooms: filteredRooms,
+                ),
+              );
             },
           );
         });
+  }
+
+  void changeFilter(FilterType filterType, {int? currentUserId}) {
+    _currentFilter = filterType;
+
+    if (state is RoomsLoadedState) {
+      final currentState = state as RoomsLoadedState;
+      final filteredRooms = _filterRooms(currentState.rooms);
+      emit(
+        RoomsLoadedState(
+          rooms: currentState.rooms,
+          filterType: filterType,
+          filteredRooms: filteredRooms,
+        ),
+      );
+    } else if (currentUserId != null) {
+      // If we're not in loaded state, refetch with the new filter
+      fetchRooms(currentUserId: currentUserId);
+    } else {
+      // Just update the filter type in current state
+      if (state is RoomsLoadingState) {
+        emit(RoomsLoadingState(filterType: filterType));
+      } else if (state is RoomsErrorState) {
+        emit(
+          RoomsErrorState(
+            message: (state as RoomsErrorState).message,
+            filterType: filterType,
+          ),
+        );
+      }
+    }
+  }
+
+  List<RoomModel> _filterRooms(List<RoomModel> rooms) {
+    switch (_currentFilter) {
+      case FilterType.all: // All rooms
+        return rooms;
+      case FilterType.read: // Read rooms
+        return rooms
+            .where(
+              (room) => room.unreadMessages == null || room.unreadMessages == 0,
+            )
+            .toList();
+      case FilterType.unread: // Unread rooms
+        return rooms
+            .where(
+              (room) => room.unreadMessages != null && room.unreadMessages! > 0,
+            )
+            .toList();
+    }
   }
 
   @override
