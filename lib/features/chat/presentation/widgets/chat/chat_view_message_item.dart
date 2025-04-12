@@ -76,7 +76,7 @@ class ChatViewMessageItem extends StatelessWidget {
                     children: [
                       SizedBox(width: 4.w),
                       Icon(
-                        Icons.check_rounded,
+                        Icons.done_all,
                         size: 14.r,
                         color:
                             message.status == 'sent'
